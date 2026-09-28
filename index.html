@@ -46,6 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/fontawesome/css/fontawesome.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -81,8 +82,8 @@
     <h1>Your business doesn't need <span class="grad">another boring ad.</span></h1>
     <p class="sub">I create cinematic AI-powered videos that turn your products, services, and ideas into content people actually want to watch.</p>
     <div class="cta-row">
-      <a href="#work" class="btn btn-ghost" data-track="hero_cta" data-track-label="see_work">See My Work</a>
-      <a href="#start" class="btn btn-primary" data-track="hero_cta" data-track-label="start_project">Start a Project</a>
+      <a href="#work" class="btn btn-ghost" data-track="hero_cta" data-track-label="see_work"><i class="fa-solid fa-play" aria-hidden="true"></i> See My Work</a>
+      <a href="#start" class="btn btn-primary" data-track="hero_cta" data-track-label="start_project">Start a Project <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
     </div>
   </div>
   
@@ -110,7 +111,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
   </div>
-  <p class="carousel-hint">Tap the centre clip to watch with sound</p>
+  <p class="carousel-hint"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Tap the centre clip to watch with sound</p>
   <p class="sr-only" id="carouselStatus" aria-live="polite"></p>
 </section>
 
@@ -133,17 +134,17 @@
     </div>
     <div class="steps">
       <div class="step reveal">
-        <div class="step-num">01</div>
+        <div class="step-num"><span>01</span><i class="fa-solid fa-comments" aria-hidden="true"></i></div>
         <h3>Tell Me What You Need</h3>
         <p>Send me your product, service, idea or campaign brief.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">02</div>
+        <div class="step-num"><span>02</span><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></div>
         <h3>I Create</h3>
         <p>I develop the concept, visuals, AI generation, voiceover and editing where needed.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">03</div>
+        <div class="step-num"><span>03</span><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
         <h3>You Get Your Video</h3>
         <p>You receive finished content ready for your marketing channels.</p>
       </div>
@@ -167,7 +168,7 @@
       <p>Every project is built from scratch around your product and your audience. No templates, no recycled footage.</p>
 
       <div class="tools">
-        <div class="tools-label">Made with</div>
+        <div class="tools-label"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Made with</div>
         <ul class="tools-list">
           <li>Kling</li>
           <li>Veo</li>
@@ -188,7 +189,7 @@
   <div class="final-cta reveal">
     <h2>Ready to make something people can't scroll past?</h2>
     <p>Tell me what you're selling, and let's turn it into something worth watching.</p>
-    <a href="https://wa.me/2347068716014?text=Hi%20Isaac%2C%20I%20want%20to%20start%20a%20project" target="_blank" rel="noopener" class="btn btn-dark" data-track="whatsapp_click" data-track-label="final_cta">Start a Project →</a>
+    <a href="https://wa.me/2347068716014?text=Hi%20Isaac%2C%20I%20want%20to%20start%20a%20project" target="_blank" rel="noopener" class="btn btn-dark" data-track="whatsapp_click" data-track-label="final_cta"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Start a Project</a>
   </div>
 </section>
 
@@ -200,9 +201,9 @@
       <div class="footer-tag">AI-powered videos for businesses that want to stand out.</div>
     </div>
     <div class="footer-links">
-      <a href="https://www.tiktok.com/@cre8tiveisaac" target="_blank" rel="noopener" data-track="social_click" data-track-label="tiktok">TikTok</a>
-      <a href="https://t.me/crypzic" target="_blank" rel="noopener" data-track="social_click" data-track-label="Telegram">Telegram</a>
-      <a href="https://wa.me/2347068716014" target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="footer">WhatsApp</a>
+      <a href="https://www.tiktok.com/@cre8tiveisaac" target="_blank" rel="noopener" data-track="social_click" data-track-label="tiktok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a>
+      <a href="https://t.me/crypzic" target="_blank" rel="noopener" data-track="social_click" data-track-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i> Telegram</a>
+      <a href="https://wa.me/2347068716014" target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="footer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>
     </div>
     <div class="footer-copy">© 2026 Isaac D | AI Creator. All rights reserved.</div>
   </div>
@@ -225,7 +226,7 @@
     <div class="lightbox-info">
       <div class="lightbox-label" id="lightboxLabel"></div>
       <p>Imagine this with <em>your</em> product in it.</p>
-      <a class="btn btn-primary" id="lightboxCta" href="#" data-track="whatsapp_click" target="_blank" rel="noopener">Want one like this? Let's talk →</a>
+      <a class="btn btn-primary" id="lightboxCta" href="#" data-track="whatsapp_click" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Want one like this? Let's talk</a>
     </div>
   </div>
 </div>

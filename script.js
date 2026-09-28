@@ -121,27 +121,27 @@
   ];
 
   var createCategories = [
-    { title: 'Product Ads', desc: 'Cinematic product-focused advertising.' },
-    { title: 'Fashion', desc: 'Campaign-style fashion and clothing content.' },
-    { title: 'Automotive', desc: 'Vehicle showcases and commercial videos.' },
-    { title: 'Real Estate', desc: 'Cinematic property walkthroughs and promos.' },
-    { title: 'Beauty & Skincare', desc: 'Premium product and application visuals.' },
-    { title: 'UGC / AI Creators', desc: 'Creator-style content for social ads.' },
-    { title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.' }
+    { icon: 'fa-bag-shopping', title: 'Product Ads', desc: 'Cinematic product-focused advertising.' },
+    { icon: 'fa-shirt', title: 'Fashion', desc: 'Campaign-style fashion and clothing content.' },
+    { icon: 'fa-car', title: 'Automotive', desc: 'Vehicle showcases and commercial videos.' },
+    { icon: 'fa-house', title: 'Real Estate', desc: 'Cinematic property walkthroughs and promos.' },
+    { icon: 'fa-spa', title: 'Beauty & Skincare', desc: 'Premium product and application visuals.' },
+    { icon: 'fa-user-check', title: 'UGC / AI Creators', desc: 'Creator-style content for social ads.' },
+    { icon: 'fa-mobile-screen', title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.' }
   ];
 
   var createGrid = document.getElementById('createGrid');
   createCategories.forEach(function(c) {
     var el = document.createElement('div');
     el.className = 'create-card';
-    el.innerHTML = '<div class="dot"></div><h3></h3><p></p>';
+    el.innerHTML = '<div class="card-icon"><i class="fa-solid ' + c.icon + '" aria-hidden="true"></i></div><h3></h3><p></p>';
     el.querySelector('h3').textContent = c.title;
     el.querySelector('p').textContent = c.desc;
     createGrid.appendChild(el);
   });
   var moreEl = document.createElement('div');
   moreEl.className = 'create-card more';
-  moreEl.innerHTML = '<span>+ And more</span>';
+  moreEl.innerHTML = '<span><i class="fa-solid fa-plus" aria-hidden="true"></i> And more</span>';
   createGrid.appendChild(moreEl);
 
   function whatsappLink(message) {
