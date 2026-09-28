@@ -28,11 +28,11 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
      `full: true` to that clip's entry in `portfolioItems` in `script.js`.
    - To add or rename categories, edit `portfolioItems` in `script.js`.
 2. **Your photo** — `assets/images/isaac.jpg` (used in About and on the pricelists). Replace the file to update it.
-3. **Your domain** — link previews use `https://ai-portfolio-web-ashy.vercel.app`. If you move to your own
+3. **Your domain** — link previews use `https://ai-skill-website.vercel.app`. If you move to another
    domain, replace it in `index.html` and both pricelist pages.
-4. **Analytics** — create a free Google Analytics 4 property, then paste the Measurement ID
-   (`G-XXXXXXXXXX`) into `window.GA_MEASUREMENT_ID` in `index.html`. Tracked events:
-   `clip_open`, `whatsapp_click`, `social_click`, `hero_cta`.
+4. **Analytics** — Google Analytics 4 is on (`G-MJGEMBM6V5`, set in `window.GA_MEASUREMENT_ID` in
+   `index.html` and both pricelist pages). Tracked events: `clip_open`, `whatsapp_click`,
+   `social_click`, `hero_cta`, and on the pricelists `package_select`.
 
 ## Pricelists (unlisted)
 
