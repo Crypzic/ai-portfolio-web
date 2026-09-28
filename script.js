@@ -93,6 +93,9 @@
 
   // ---------- Hero video (always autoplays) ----------
   var heroVideo = document.getElementById('hero-video');
+  // Until assets/videos/hero.mp4 is uploaded, the animated gradient behind it shows instead.
+  heroVideo.addEventListener('error', function() { heroVideo.style.display = 'none'; });
+  if (heroVideo.error) heroVideo.style.display = 'none';
   tryPlay(heroVideo);
   // iOS Low Power Mode can block the first attempt; retry on the first interaction.
   ['touchstart', 'click', 'scroll'].forEach(function(evt) {
@@ -102,23 +105,27 @@
 
 
   // ---------- Portfolio clips ----------
-  // Add/remove items freely — the carousel rebuilds itself from this array.
-  //   src    — the short teaser clip shown in the carousel (and in the player).
-  //            Put your files in assets/videos/ and use e.g. 'assets/videos/product-ads.mp4'.
-  //   poster — optional still image (e.g. 'assets/posters/product-ads.jpg'). Shown before the
-  //            clip loads, so side cards never look empty. Strongly recommended.
-  //   full   — optional longer/higher-quality version to play when the clip is opened.
-  //            If left out, the player uses `src`.
-  // NOTE: the src URLs below are free Mixkit stock clips standing in until your own are ready.
+  // Each clip loads from a fixed file name — just upload the file and it appears:
+  //   assets/videos/<file>.mp4        the teaser shown in the carousel (and in the player)
+  //   assets/posters/<file>.jpg       optional still frame, shown while the clip loads
+  //   assets/videos/<file>-full.mp4   optional longer version for the player: set full: true
+  // Until a video file exists, its card shows the coloured placeholder instead.
+  // The carousel rebuilds itself from this list, so you can add or remove entries.
   var portfolioItems = [
-    { label: 'Product Ads',     color1: '#8d6bff', color2: '#2c1f5c', src: 'https://assets.mixkit.co/videos/20766/20766-360.mp4' },
-    { label: 'Fashion',         color1: '#e84fd8', color2: '#521a44', src: 'https://assets.mixkit.co/videos/21328/21328-360.mp4' },
-    { label: 'Automotive',      color1: '#6f55ff', color2: '#1c1f4a', src: 'https://assets.mixkit.co/videos/35540/35540-360.mp4' },
-    { label: 'Real Estate',     color1: '#b344ff', color2: '#2e1650', src: 'https://assets.mixkit.co/videos/27543/27543-360.mp4' },
-    { label: 'Skincare',        color1: '#e84fd8', color2: '#451a37', src: 'https://assets.mixkit.co/videos/50406/50406-720.mp4' },
-    { label: 'UGC / Creators',  color1: '#8d6bff', color2: '#211a4d', src: 'https://assets.mixkit.co/videos/41269/41269-360.mp4' },
-    { label: 'Social Content',  color1: '#6f55ff', color2: '#2a1a4a', src: 'https://assets.mixkit.co/videos/42291/42291-360.mp4' }
+    { label: 'Product Ads',     file: 'product-ads', color1: '#8d6bff', color2: '#2c1f5c' },
+    { label: 'Fashion',         file: 'fashion',     color1: '#e84fd8', color2: '#521a44' },
+    { label: 'Automotive',      file: 'automotive',  color1: '#6f55ff', color2: '#1c1f4a' },
+    { label: 'Real Estate',     file: 'real-estate', color1: '#b344ff', color2: '#2e1650' },
+    { label: 'Skincare',        file: 'skincare',    color1: '#e84fd8', color2: '#451a37' },
+    { label: 'UGC / Creators',  file: 'ugc',         color1: '#8d6bff', color2: '#211a4d' },
+    { label: 'Social Content',  file: 'social',      color1: '#6f55ff', color2: '#2a1a4a' }
   ];
+  portfolioItems.forEach(function(item) {
+    if (!item.file) return;
+    item.src = item.src || 'assets/videos/' + item.file + '.mp4';
+    item.poster = item.poster || 'assets/posters/' + item.file + '.jpg';
+    if (item.full === true) item.full = 'assets/videos/' + item.file + '-full.mp4';
+  });
 
   var createCategories = [
     { icon: 'fa-bag-shopping', title: 'Product Ads', desc: 'Cinematic product-focused advertising.' },
@@ -150,6 +157,7 @@
   if (phoneVideo && phoneItem && phoneItem.src) {
     if (phoneItem.poster) phoneVideo.poster = phoneItem.poster;
     phoneVideo.src = phoneItem.src;
+    phoneVideo.addEventListener('error', function() { phoneVideo.remove(); });
     playWhileVisible(phoneVideo, function() { return phoneVideo; });
   }
 
@@ -274,6 +282,12 @@
       v.preload = 'metadata';
       if (item.poster) v.poster = item.poster;
       v.src = item.src;
+      // No file uploaded yet (or it failed): drop the video so the gradient placeholder shows.
+      v.addEventListener('error', function() {
+        item.missing = true;
+        v.remove();
+        el.classList.add('no-clip');
+      });
       el.appendChild(v);
     }
 
@@ -440,7 +454,7 @@
 
   function openLightbox(i) {
     var item = portfolioItems[i];
-    if (!item || !item.src) return;
+    if (!item || !item.src || item.missing) return;
     lastFocus = document.activeElement;
     lightboxOpen = true;
     syncCarouselPlayback();

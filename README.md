@@ -4,18 +4,27 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
 
 ## Before going live
 
-1. **Your clips** — put them in `assets/videos/` and update the `portfolioItems` list at the
-   top of the portfolio section in `script.js`:
-   ```js
-   { label: 'Product Ads', color1: '#8d6bff', color2: '#2c1f5c',
-     src: 'assets/videos/product-ads.mp4',
-     poster: 'assets/posters/product-ads.jpg' },
-   ```
+1. **Your clips** — just upload files with these exact names. No code changes needed; any slot
+   without a file shows its coloured placeholder until you add it.
+
+   | Where it shows | Video (required) | Still image (optional) |
+   |---|---|---|
+   | Hero background | `assets/videos/hero.mp4` | `assets/posters/hero.jpg` |
+   | Carousel: Product Ads | `assets/videos/product-ads.mp4` | `assets/posters/product-ads.jpg` |
+   | Carousel: Fashion | `assets/videos/fashion.mp4` | `assets/posters/fashion.jpg` |
+   | Carousel: Automotive | `assets/videos/automotive.mp4` | `assets/posters/automotive.jpg` |
+   | Carousel: Real Estate | `assets/videos/real-estate.mp4` | `assets/posters/real-estate.jpg` |
+   | Carousel: Skincare | `assets/videos/skincare.mp4` | `assets/posters/skincare.jpg` |
+   | Carousel: UGC / Creators (also plays in the "Built to perform" phone) | `assets/videos/ugc.mp4` | `assets/posters/ugc.jpg` |
+   | Carousel: Social Content | `assets/videos/social.mp4` | `assets/posters/social.jpg` |
+
+   - Names are **lowercase** and must match exactly (`.mp4`, not `.MP4` or `.mov`).
    - Export as **MP4 (H.264 + AAC)**. Carousel teasers: 720p, 5–8 s, aim for **under 3 MB** each.
-   - `poster` is a still frame (JPG, ~600px wide). It's shown before a clip loads.
-   - Optional `full: 'assets/videos/product-ads-full.mp4'` plays a longer/sharper version
-     when someone taps the clip. Without it, the teaser plays.
-   - Hero video: set the `src` of `#hero-video` in `index.html` (1080p, under ~6 MB, no audio needed).
+     Hero: 1080p, under ~6 MB, no audio needed.
+   - Still images: JPG, ~600px wide (the first frame of the clip works well).
+   - Longer version for the player (optional): upload `assets/videos/<name>-full.mp4` and add
+     `full: true` to that clip's entry in `portfolioItems` in `script.js`.
+   - To add or rename categories, edit `portfolioItems` in `script.js`.
 2. **Your photo** — `assets/images/isaac.jpg` (used in About and on the pricelists). Replace the file to update it.
 3. **Your domain** — link previews use `https://ai-portfolio-web-ashy.vercel.app`. If you move to your own
    domain, replace it in `index.html` and both pricelist pages.
