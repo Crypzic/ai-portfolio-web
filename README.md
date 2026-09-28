@@ -15,8 +15,12 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
    | Carousel: Automotive | `assets/videos/automotive.mp4` |
    | Carousel: Real Estate | `assets/videos/real-estate.mp4` |
    | Carousel: Skincare | `assets/videos/skincare.mp4` |
-   | Carousel: UGC / Creators (also plays in the "Built to perform" phone) | `assets/videos/ugc.mp4` |
+   | Carousel: UGC / Creators | `assets/videos/ugc.mp4` |
    | Carousel: Social Content | `assets/videos/social.mp4` |
+   | "Built to perform" TikTok phone (9:16) | `assets/videos/tiktok.mp4` (uses `ugc.mp4` until added) |
+   | "Built to perform" Reels phone (9:16) | `assets/videos/reels.mp4` (uses `fashion.mp4` until added) |
+   | "Built to perform" YouTube phone (**16:9**) | `assets/videos/youtube.mp4` |
+   | "Built to perform" X phone (**16:9**) | `assets/videos/x.mp4` |
 
    - Names are **lowercase** and must match exactly (`.mp4`, not `.MP4` or `.mov`).
    - Export as **MP4 (H.264)** with **"Web Optimized" / fast start** on, so playback can begin

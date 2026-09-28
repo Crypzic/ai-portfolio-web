@@ -153,47 +153,164 @@
     </div>
 
     <div class="results-visual reveal">
-      <!-- Phone mock: plays one of the portfolio clips (set in script.js). -->
-      <div class="phone">
-        <div class="phone-screen">
-          <video id="phoneVideo" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
-          <div class="phone-shade"></div>
-          <span class="example-badge">Example</span>
-          <div class="phone-rail" aria-hidden="true">
-            <span><i class="fa-solid fa-heart" aria-hidden="true"></i><b>24.8K</b></span>
-            <span><i class="fa-solid fa-comment-dots" aria-hidden="true"></i><b>1,204</b></span>
-            <span><i class="fa-solid fa-share" aria-hidden="true"></i><b>3,960</b></span>
-            <span><i class="fa-solid fa-bookmark" aria-hidden="true"></i><b>Save</b></span>
-          </div>
-          <div class="phone-caption" aria-hidden="true">
-            <strong>@yourbrand</strong>
-            <p>Your brand could be getting these views too ✨</p>
-            <span class="phone-sound"><i class="fa-solid fa-music" aria-hidden="true"></i> Original sound</span>
+      <!-- Swipeable phones: one per platform. Only the centre phone plays; each loads the first
+           video file in its data-files list that exists in assets/videos/ (e.g. "reels,fashion"
+           uses reels.mp4, falling back to fashion.mp4). Numbers are illustrative examples. -->
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+          <linearGradient id="sparkStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8d6bff"/><stop offset="1" stop-color="#e84fd8"/></linearGradient>
+          <linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8d6bff" stop-opacity=".28"/><stop offset="1" stop-color="#8d6bff" stop-opacity="0"/></linearGradient>
+        </defs>
+      </svg>
+      <div class="pf-tabs" role="tablist" aria-label="Platform examples"><button class="pf-tab active" type="button" data-index="0" role="tab" aria-selected="true"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</button><button class="pf-tab" type="button" data-index="1" role="tab" aria-selected="false"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Reels</button><button class="pf-tab" type="button" data-index="2" role="tab" aria-selected="false"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</button><button class="pf-tab" type="button" data-index="3" role="tab" aria-selected="false"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i> X</button></div>
+      <div class="pf-stage" id="pfStage" tabindex="0" aria-roledescription="carousel" aria-label="Platform examples. Swipe or use arrow keys.">
+      <div class="pf-slide" data-platform="tiktok" data-files="tiktok,ugc" aria-label="TikTok example">
+        <div class="phone phone-tiktok">
+          <div class="phone-screen">
+            <video muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
+            <div class="phone-shade"></div>
+            <div class="tt-top" aria-hidden="true"><span>Following</span><b>For You</b><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></div>
+            <span class="example-badge">Example</span>
+            <div class="phone-rail" aria-hidden="true">
+              <span class="tt-avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+              <span class="rail-like"><i class="fa-solid fa-heart" aria-hidden="true"></i><b>24.8K</b></span>
+              <span><i class="fa-solid fa-comment-dots" aria-hidden="true"></i><b>1,204</b></span>
+              <span><i class="fa-solid fa-bookmark" aria-hidden="true"></i><b>2,310</b></span>
+              <span><i class="fa-solid fa-share" aria-hidden="true"></i><b>3,960</b></span>
+            </div>
+            <div class="phone-caption" aria-hidden="true">
+              <strong>@yourbrand</strong>
+              <p>Your brand could be getting these views too ✨</p>
+              <span class="phone-sound"><i class="fa-solid fa-music" aria-hidden="true"></i> Original sound · yourbrand</span>
+            </div>
           </div>
         </div>
+          <div class="stat-card glass sc-a">
+            <div class="stat-label"><i class="fa-solid fa-eye" aria-hidden="true"></i> Views · 7 days</div>
+            <div class="stat-value"><span data-count-to="128400" data-format="k">0</span></div><svg class="sparkline" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0 L120 36 L0 36 Z" fill="url(#sparkFill)"/><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0" fill="none" stroke="url(#sparkStroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+          </div>
+          <div class="stat-card glass sc-b">
+            <div class="stat-label"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> Avg. watched</div>
+            <div class="stat-value"><span data-count-to="87" data-format="int">0</span>%</div><div class="stat-bar"><span style="--w:87%"></span></div>
+          </div>
+          <div class="stat-card glass sc-c">
+            <div class="stat-label"><i class="fa-solid fa-share" aria-hidden="true"></i> Shares</div>
+            <div class="stat-value"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> <span data-count-to="3960" data-format="int">0</span></div>
+          </div>
       </div>
-
-      <!-- Floating "analytics" cards. Illustrative numbers only. -->
-      <div class="stat-card glass float sc-views" data-depth="0.5">
-        <div class="stat-label"><i class="fa-solid fa-eye" aria-hidden="true"></i> Views · 7 days</div>
-        <div class="stat-value" data-count-to="128400" data-format="k">0</div>
-        <svg class="sparkline" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="sparkStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8d6bff"/><stop offset="1" stop-color="#e84fd8"/></linearGradient>
-            <linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8d6bff" stop-opacity=".28"/><stop offset="1" stop-color="#8d6bff" stop-opacity="0"/></linearGradient>
-          </defs>
-          <path class="spark-area" d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0 L120 36 L0 36 Z" fill="url(#sparkFill)"/>
-          <path class="spark-line" d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0" fill="none" stroke="url(#sparkStroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-        </svg>
+      <div class="pf-slide" data-platform="reels" data-files="reels,fashion" aria-label="Instagram Reels example">
+        <div class="phone phone-reels">
+          <div class="phone-screen">
+            <video muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
+            <div class="phone-shade"></div>
+            <div class="rl-top" aria-hidden="true"><b>Reels</b><i class="fa-solid fa-camera" aria-hidden="true"></i></div>
+            <span class="example-badge">Example</span>
+            <div class="phone-rail rl-rail" aria-hidden="true">
+              <span class="rail-like"><i class="fa-solid fa-heart" aria-hidden="true"></i><b>18.2K</b></span>
+              <span><i class="fa-solid fa-comment" aria-hidden="true"></i><b>842</b></span>
+              <span><i class="fa-solid fa-paper-plane" aria-hidden="true"></i><b>1,530</b></span>
+              <span><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></span>
+            </div>
+            <div class="phone-caption rl-caption" aria-hidden="true">
+              <div class="rl-user"><span class="rl-avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span><strong>yourbrand</strong><span class="rl-follow">Follow</span></div>
+              <p>New drop, same obsession. Tap to shop 🛍️</p>
+              <span class="phone-sound"><i class="fa-solid fa-music" aria-hidden="true"></i> yourbrand · Original audio</span>
+            </div>
+          </div>
+        </div>
+          <div class="stat-card glass sc-a">
+            <div class="stat-label"><i class="fa-solid fa-play" aria-hidden="true"></i> Plays</div>
+            <div class="stat-value"><span data-count-to="96200" data-format="k">0</span></div><svg class="sparkline" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0 L120 36 L0 36 Z" fill="url(#sparkFill)"/><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0" fill="none" stroke="url(#sparkStroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+          </div>
+          <div class="stat-card glass sc-b">
+            <div class="stat-label"><i class="fa-solid fa-users" aria-hidden="true"></i> Accounts reached</div>
+            <div class="stat-value"><span data-count-to="71800" data-format="k">0</span></div>
+          </div>
+          <div class="stat-card glass sc-c">
+            <div class="stat-label"><i class="fa-solid fa-bookmark" aria-hidden="true"></i> Saves</div>
+            <div class="stat-value"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> <span data-count-to="2340" data-format="int">0</span></div>
+          </div>
       </div>
-      <div class="stat-card glass float sc-watch" data-depth="0.8">
-        <div class="stat-label"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> Avg. watched</div>
-        <div class="stat-value"><span data-count-to="87" data-format="int">0</span>%</div>
-        <div class="stat-bar"><span style="--w:87%"></span></div>
+      <div class="pf-slide" data-platform="youtube" data-files="youtube" aria-label="YouTube example">
+        <div class="phone phone-yt">
+          <div class="phone-screen yt-screen">
+            <div class="yt-player">
+              <video muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
+              <span class="example-badge">Example</span>
+              <div class="yt-progress"><span></span></div>
+            </div>
+            <div class="yt-body" aria-hidden="true">
+              <h4>Your Product, But Cinematic | Official Ad</h4>
+              <div class="yt-meta">58K views · 2 days ago <b>...more</b></div>
+              <div class="yt-channel">
+                <span class="yt-avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+                <div><strong>Your Brand</strong><small>12.4K subscribers</small></div>
+                <span class="yt-sub">Subscribe</span>
+              </div>
+              <div class="yt-actions">
+                <span><i class="fa-solid fa-thumbs-up" aria-hidden="true"></i> 4.1K <i class="yt-sep"></i> <i class="fa-solid fa-thumbs-down" aria-hidden="true"></i></span>
+                <span><i class="fa-solid fa-share" aria-hidden="true"></i> Share</span>
+                <span><i class="fa-solid fa-download" aria-hidden="true"></i> Download</span>
+              </div>
+              <div class="yt-comments"><b>Comments</b> 386<p><span class="yt-dot"></span> Need this for my brand asap 🔥</p></div>
+              <div class="yt-next"><span class="yt-thumb"></span><div><i></i><i></i></div></div>
+              <div class="yt-next"><span class="yt-thumb"></span><div><i></i><i></i></div></div>
+            </div>
+          </div>
+        </div>
+          <div class="stat-card glass sc-a">
+            <div class="stat-label"><i class="fa-solid fa-eye" aria-hidden="true"></i> Views · 28 days</div>
+            <div class="stat-value"><span data-count-to="58700" data-format="k">0</span></div><svg class="sparkline" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0 L120 36 L0 36 Z" fill="url(#sparkFill)"/><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0" fill="none" stroke="url(#sparkStroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+          </div>
+          <div class="stat-card glass sc-b">
+            <div class="stat-label"><i class="fa-solid fa-clock" aria-hidden="true"></i> Watch time</div>
+            <div class="stat-value"><span data-count-to="1920" data-format="int">0</span> hrs</div>
+          </div>
+          <div class="stat-card glass sc-c">
+            <div class="stat-label"><i class="fa-solid fa-bell" aria-hidden="true"></i> Subscribers</div>
+            <div class="stat-value"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> +<span data-count-to="412" data-format="int">0</span></div>
+          </div>
       </div>
-      <div class="stat-card glass float sc-ctr" data-depth="0.35">
-        <div class="stat-label"><i class="fa-solid fa-arrow-pointer" aria-hidden="true"></i> Link clicks</div>
-        <div class="stat-value stat-up"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> <span data-count-to="4.2" data-format="dec">0</span>%</div>
+      <div class="pf-slide" data-platform="x" data-files="x" aria-label="X example">
+        <div class="phone phone-x">
+          <div class="phone-screen x-screen">
+            <div class="x-top" aria-hidden="true"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i><b>Post</b></div>
+            <div class="x-post">
+              <div class="x-head" aria-hidden="true">
+                <span class="x-avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+                <div><strong>Your Brand <i class="fa-solid fa-circle-check" aria-hidden="true"></i></strong><small>@yourbrand</small></div>
+                <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+              </div>
+              <p class="x-text" aria-hidden="true">We made an ad people actually want to watch. Sound on 🔊</p>
+              <div class="x-media">
+                <video muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
+                <span class="example-badge">Example</span>
+              </div>
+              <div class="x-time" aria-hidden="true">2:14 PM · Sep 28, 2026 · <b>312K</b> Views</div>
+              <div class="x-counts" aria-hidden="true"><span><b>1,204</b> Reposts</span><span><b>286</b> Quotes</span><span><b>9,842</b> Likes</span></div>
+              <div class="x-actions" aria-hidden="true"><i class="fa-solid fa-comment" aria-hidden="true"></i><i class="fa-solid fa-retweet" aria-hidden="true"></i><i class="fa-solid fa-heart" aria-hidden="true"></i><i class="fa-solid fa-bookmark" aria-hidden="true"></i><i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i></div>
+              <div class="x-reply" aria-hidden="true"><span class="x-avatar sm"><i class="fa-solid fa-user" aria-hidden="true"></i></span> Post your reply</div>
+            </div>
+          </div>
+        </div>
+          <div class="stat-card glass sc-a">
+            <div class="stat-label"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Impressions</div>
+            <div class="stat-value"><span data-count-to="312000" data-format="k">0</span></div><svg class="sparkline" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0 L120 36 L0 36 Z" fill="url(#sparkFill)"/><path d="M0.0 30.0 L10.9 29.0 L21.8 31.0 L32.7 27.0 L43.6 28.0 L54.5 24.0 L65.5 22.0 L76.4 23.0 L87.3 17.0 L98.2 13.0 L109.1 10.0 L120.0 5.0" fill="none" stroke="url(#sparkStroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+          </div>
+          <div class="stat-card glass sc-b">
+            <div class="stat-label"><i class="fa-solid fa-heart" aria-hidden="true"></i> Engagements</div>
+            <div class="stat-value"><span data-count-to="14600" data-format="k">0</span></div>
+          </div>
+          <div class="stat-card glass sc-c">
+            <div class="stat-label"><i class="fa-solid fa-arrow-pointer" aria-hidden="true"></i> Link clicks</div>
+            <div class="stat-value"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> <span data-count-to="2180" data-format="int">0</span></div>
+          </div>
+      </div>
+      </div>
+      <div class="pf-controls">
+        <button class="carousel-arrow" id="pfPrev" type="button" aria-label="Previous platform"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="carousel-dots" id="pfDots"></div>
+        <button class="carousel-arrow" id="pfNext" type="button" aria-label="Next platform"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
       <p class="results-note">Illustrative example of what each video is built for, not a past client result.</p>
     </div>

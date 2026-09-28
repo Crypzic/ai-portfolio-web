@@ -159,16 +159,6 @@
   moreEl.innerHTML = '<span><i class="fa-solid fa-plus" aria-hidden="true"></i> And more</span>';
   createGrid.appendChild(moreEl);
 
-  // "Built to perform" phone mock plays the UGC clip (index 5) while on screen.
-  var phoneVideo = document.getElementById('phoneVideo');
-  var phoneItem = portfolioItems[5];
-  if (phoneVideo && phoneItem && phoneItem.src) {
-    phoneVideo.src = phoneItem.src + '#t=0.1';
-    showFirstFrame(phoneVideo);
-    phoneVideo.addEventListener('error', function() { phoneVideo.remove(); });
-    playWhileVisible(phoneVideo, function() { return phoneVideo; });
-  }
-
   function whatsappLink(message) {
     return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
   }
@@ -221,37 +211,154 @@
     document.addEventListener('pointerleave', function() { glow.classList.remove('on'); });
   }
 
-  // Example stat cards: count up once when scrolled into view
+  // ================= PLATFORM SHOWCASE (swipeable phones) =================
+  // One phone per platform. Only the centre phone plays; the others sit on their opening frame.
+  // Each slide's data-files lists video names to try in order (first one that exists wins).
   function formatCount(n, fmt) {
     if (fmt === 'k') return n >= 1000 ? (n / 1000).toFixed(1) + 'K' : Math.round(n).toString();
     if (fmt === 'dec') return n.toFixed(1);
-    return Math.round(n).toString();
+    return Math.round(n).toLocaleString('en-US');
   }
-  var counters = document.querySelectorAll('[data-count-to]');
-  var bars = document.querySelectorAll('.stat-bar');
-  function finishCounters() {
-    counters.forEach(function(el) { el.textContent = formatCount(parseFloat(el.getAttribute('data-count-to')), el.getAttribute('data-format')); });
-    bars.forEach(function(b) { b.classList.add('on'); });
+  // Example stat cards count up the first time their phone reaches the centre.
+  function runCounters(slide) {
+    if (slide.getAttribute('data-counted')) return;
+    slide.setAttribute('data-counted', '1');
+    var els = slide.querySelectorAll('[data-count-to]');
+    slide.querySelectorAll('.stat-bar').forEach(function(b) { b.classList.add('on'); });
+    function set(p) {
+      els.forEach(function(el) {
+        el.textContent = formatCount(parseFloat(el.getAttribute('data-count-to')) * p, el.getAttribute('data-format'));
+      });
+    }
+    if (prefersReducedMotion()) { set(1); return; }
+    var start = performance.now(), duration = 1500;
+    (function step(now) {
+      var p = Math.min((now - start) / duration, 1);
+      set(1 - Math.pow(1 - p, 3));
+      if (p < 1) requestAnimationFrame(step);
+    })(start);
   }
-  var resultsVisual = document.querySelector('.results-visual');
-  if (resultsVisual && 'IntersectionObserver' in window && !prefersReducedMotion()) {
-    var countIo = new IntersectionObserver(function(entries) {
-      if (!entries[0].isIntersecting) return;
-      countIo.disconnect();
-      bars.forEach(function(b) { b.classList.add('on'); });
-      var start = performance.now(), duration = 1600;
-      (function step(now) {
-        var p = Math.min((now - start) / duration, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        counters.forEach(function(el) {
-          el.textContent = formatCount(parseFloat(el.getAttribute('data-count-to')) * eased, el.getAttribute('data-format'));
-        });
-        if (p < 1) requestAnimationFrame(step); else finishCounters();
-      })(start);
-    }, { threshold: 0.35 });
-    countIo.observe(resultsVisual);
-  } else {
-    finishCounters();
+
+  var pfStage = document.getElementById('pfStage');
+  if (pfStage) {
+    var pfSlides = Array.prototype.slice.call(pfStage.querySelectorAll('.pf-slide'));
+    var pfTabs = document.querySelectorAll('.pf-tab');
+    var pfDotsWrap = document.getElementById('pfDots');
+    var pfN = pfSlides.length;
+    var pfIndex = 0;
+    var pfVisible = false;
+    var pfAuto = null;
+    var pfUserTook = false;
+
+    // Load each slide's clip, falling back through its data-files list.
+    pfSlides.forEach(function(slide, k) {
+      var v = slide.querySelector('video');
+      var files = (slide.getAttribute('data-files') || '').split(',').filter(Boolean);
+      var attempt = 0;
+      function load() {
+        if (attempt >= files.length) { v.remove(); return; }
+        v.src = 'assets/videos/' + files[attempt].trim() + '.mp4#t=0.1';
+      }
+      if (v) {
+        v.addEventListener('error', function() { attempt++; load(); });
+        showFirstFrame(v);
+        load();
+      }
+      slide.addEventListener('click', function() {
+        if (pfDragMoved) return;
+        if (k !== pfIndex) { pfUserTook = true; pfGo(k); }
+      });
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', 'Show ' + (slide.getAttribute('aria-label') || 'platform'));
+      dot.addEventListener('click', function() { pfUserTook = true; pfGo(k); });
+      pfDotsWrap.appendChild(dot);
+    });
+    var pfDots = pfDotsWrap.querySelectorAll('button');
+
+    function pfLayout() {
+      pfSlides.forEach(function(slide, k) {
+        var off = k - pfIndex;
+        if (off > pfN / 2) off -= pfN;
+        if (off < -pfN / 2) off += pfN;
+        var abs = Math.abs(off);
+        slide.classList.toggle('is-active', off === 0);
+        slide.setAttribute('aria-hidden', off === 0 ? 'false' : 'true');
+        slide.style.zIndex = String(10 - abs);
+        slide.style.opacity = abs > 1 ? '0' : '1';
+        slide.style.pointerEvents = abs > 1 ? 'none' : '';
+        slide.style.transform = off === 0 ? 'none'
+          : 'translateX(' + (off * 58) + '%) scale(.8) rotateY(' + (off > 0 ? -16 : 16) + 'deg)';
+      });
+      pfTabs.forEach(function(t, k) {
+        t.classList.toggle('active', k === pfIndex);
+        t.setAttribute('aria-selected', k === pfIndex ? 'true' : 'false');
+      });
+      pfDots.forEach(function(d, k) { d.classList.toggle('active', k === pfIndex); });
+    }
+    function pfSyncVideos() {
+      pfSlides.forEach(function(slide, k) {
+        var v = slide.querySelector('video');
+        if (!v) return;
+        var off = Math.abs(k - pfIndex);
+        if (Math.min(off, pfN - off) <= 1) v.preload = 'auto';
+        if (k === pfIndex && pfVisible) tryPlay(v); else v.pause();
+      });
+      if (pfVisible) runCounters(pfSlides[pfIndex]);
+    }
+    function pfGo(k) {
+      pfIndex = ((k % pfN) + pfN) % pfN;
+      pfLayout();
+      pfSyncVideos();
+    }
+
+    // Auto-advance every few seconds until the visitor takes over.
+    function pfStartAuto() {
+      if (pfAuto || pfUserTook || prefersReducedMotion()) return;
+      pfAuto = setInterval(function() { pfGo(pfIndex + 1); }, 6500);
+    }
+    function pfStopAuto() { clearInterval(pfAuto); pfAuto = null; }
+
+    pfTabs.forEach(function(t) {
+      t.addEventListener('click', function() { pfUserTook = true; pfStopAuto(); pfGo(parseInt(t.getAttribute('data-index'), 10)); });
+    });
+    document.getElementById('pfPrev').addEventListener('click', function() { pfUserTook = true; pfStopAuto(); pfGo(pfIndex - 1); });
+    document.getElementById('pfNext').addEventListener('click', function() { pfUserTook = true; pfStopAuto(); pfGo(pfIndex + 1); });
+    pfStage.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); pfUserTook = true; pfStopAuto(); pfGo(pfIndex - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); pfUserTook = true; pfStopAuto(); pfGo(pfIndex + 1); }
+    });
+
+    // Swipe / drag
+    var pfStartX = null, pfDragMoved = false;
+    function pfDown(x) { pfStartX = x; pfDragMoved = false; }
+    function pfUp(x) {
+      if (pfStartX === null) return;
+      var dx = x - pfStartX;
+      pfStartX = null;
+      if (Math.abs(dx) > 40) {
+        pfDragMoved = true;
+        setTimeout(function() { pfDragMoved = false; }, 0);
+        pfUserTook = true; pfStopAuto();
+        pfGo(pfIndex + (dx < 0 ? 1 : -1));
+      }
+    }
+    pfStage.addEventListener('mousedown', function(e) { pfDown(e.clientX); });
+    window.addEventListener('mouseup', function(e) { pfUp(e.clientX); });
+    pfStage.addEventListener('touchstart', function(e) { pfDown(e.touches[0].clientX); }, { passive: true });
+    pfStage.addEventListener('touchend', function(e) { pfUp(e.changedTouches[0].clientX); });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        pfVisible = entries[0].isIntersecting;
+        pfSyncVideos();
+        if (pfVisible) pfStartAuto(); else pfStopAuto();
+      }, { threshold: 0.3 }).observe(pfStage);
+    } else {
+      pfVisible = true;
+    }
+    pfLayout();
+    pfSyncVideos();
   }
 
   // ================= 3D CYLINDRICAL CAROUSEL =================
