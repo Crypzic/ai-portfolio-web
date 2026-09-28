@@ -120,43 +120,27 @@
     { label: 'Social Content',  color1: '#6f55ff', color2: '#2a1a4a', src: 'https://assets.mixkit.co/videos/42291/42291-360.mp4' }
   ];
 
-  // "What I Create" bento grid. `clip` is the portfolioItems index the tile jumps to in the
-  // carousel; `size` is 'big' (2x2), 'wide' (2x1) or normal.
   var createCategories = [
-    { icon: 'fa-bag-shopping',  title: 'Product Ads',          desc: 'Cinematic product-focused advertising that makes people want it now.', clip: 0, size: 'big' },
-    { icon: 'fa-shirt',         title: 'Fashion',              desc: 'Campaign-style fashion and clothing content.', clip: 1 },
-    { icon: 'fa-car',           title: 'Automotive',           desc: 'Vehicle showcases and commercial videos.', clip: 2 },
-    { icon: 'fa-house',         title: 'Real Estate',          desc: 'Cinematic property walkthroughs and promos.', clip: 3 },
-    { icon: 'fa-spa',           title: 'Beauty & Skincare',    desc: 'Premium product and application visuals.', clip: 4 },
-    { icon: 'fa-user-check',    title: 'UGC / AI Creators',    desc: 'Creator-style content for social ads, without booking a creator.', clip: 5, size: 'wide' },
-    { icon: 'fa-mobile-screen', title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.', clip: 6 }
+    { icon: 'fa-bag-shopping', title: 'Product Ads', desc: 'Cinematic product-focused advertising.' },
+    { icon: 'fa-shirt', title: 'Fashion', desc: 'Campaign-style fashion and clothing content.' },
+    { icon: 'fa-car', title: 'Automotive', desc: 'Vehicle showcases and commercial videos.' },
+    { icon: 'fa-house', title: 'Real Estate', desc: 'Cinematic property walkthroughs and promos.' },
+    { icon: 'fa-spa', title: 'Beauty & Skincare', desc: 'Premium product and application visuals.' },
+    { icon: 'fa-user-check', title: 'UGC / AI Creators', desc: 'Creator-style content for social ads.' },
+    { icon: 'fa-mobile-screen', title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.' }
   ];
 
   var createGrid = document.getElementById('createGrid');
   createCategories.forEach(function(c) {
-    var el = document.createElement('a');
-    el.href = '#work';
-    el.className = 'bento-tile glass' + (c.size ? ' ' + c.size : '');
-    el.setAttribute('aria-label', c.title + ': watch the clip');
-    el.innerHTML = '<div class="card-icon"><i class="fa-solid ' + c.icon + '" aria-hidden="true"></i></div>' +
-      '<span class="tile-cta" aria-hidden="true">Watch <i class="fa-solid fa-arrow-right"></i></span><h3></h3><p></p>';
+    var el = document.createElement('div');
+    el.className = 'create-card';
+    el.innerHTML = '<div class="card-icon"><i class="fa-solid ' + c.icon + '" aria-hidden="true"></i></div><h3></h3><p></p>';
     el.querySelector('h3').textContent = c.title;
     el.querySelector('p').textContent = c.desc;
-    if (c.size === 'big') {
-      var art = document.createElement('i');
-      art.className = 'fa-solid ' + c.icon + ' tile-art';
-      art.setAttribute('aria-hidden', 'true');
-      el.appendChild(art);
-    }
-    el.addEventListener('click', function(e) {
-      e.preventDefault();
-      goTo(c.clip);
-      document.getElementById('work').scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-    });
     createGrid.appendChild(el);
   });
   var moreEl = document.createElement('div');
-  moreEl.className = 'bento-tile more';
+  moreEl.className = 'create-card more';
   moreEl.innerHTML = '<span><i class="fa-solid fa-plus" aria-hidden="true"></i> And more</span>';
   createGrid.appendChild(moreEl);
 

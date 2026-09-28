@@ -28,6 +28,31 @@
 .price-hero p { max-width: 540px; font-size: 17px; line-height: 1.75; color: var(--muted); }
 .price-hero .cta-row { justify-content: flex-start; }
 
+/* Floating platform icons around the hero text (base styles in style.css).
+   This hero follows the light/dark theme, so the icons use theme text colour. */
+.price-hero .hero-copy { position: relative; }
+.price-hero .hero-floats { z-index: 0; }
+.price-hero .hero-copy > :not(.hero-floats) { position: relative; z-index: 1; }
+.price-hero .app-icon, .price-hero .tool-pill { color: var(--text); }
+.price-hero .tool-pill i { color: var(--purple); }
+.pf-insta .app-icon i { background: linear-gradient(45deg, #fdc468, #e1306c 45%, #a445ff); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; line-height: 1.3; padding: 0 1px; }
+.pf-yt .app-icon i { color: #ff3b3b; }
+.pf-fb .app-icon i { color: #4e8cff; }
+.pf-tiktok { top: 12%; right: 0; }
+.pf-insta  { bottom: 0; right: 2%; }   .pf-insta .float-inner { animation-delay: -1.5s; animation-duration: 7s; }
+.pf-yt     { top: -16%; left: 38%; }   .pf-yt .float-inner { animation-delay: -3s; }
+.pf-fb     { bottom: -22%; left: 8%; } .pf-fb .float-inner { animation-delay: -2.2s; animation-duration: 7.5s; }
+.pf-kling  { top: -13%; right: 8%; }   .pf-kling .float-inner { animation-delay: -4s; animation-duration: 8s; }
+.pf-veo    { bottom: -20%; left: 46%; } .pf-veo .float-inner { animation-delay: -2.6s; animation-duration: 6.5s; }
+@media (max-width: 1100px) { .pf-yt, .pf-veo { display: none; } }
+@media (max-width: 860px) {
+  /* phones: one icon on each side of the stacked buttons */
+  .pf-tiktok { top: auto; bottom: 64px; left: 0; right: auto; }
+  .pf-insta  { bottom: 2px; right: 0; }
+  .pf-fb, .pf-kling { display: none; }
+}
+@media (max-width: 340px) { .price-hero .hero-floats { display: none; } }
+
 .portrait-wrap { position: relative; width: 100%; max-width: 420px; margin-left: auto; }
 .portrait-wrap .fact-card { opacity: 0; animation: factIn .8s var(--ease) forwards, bob 7s ease-in-out infinite; animation-delay: .9s, 0s; }
 .portrait-wrap .fc-2 { animation-delay: 1.05s, -2s; }

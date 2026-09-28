@@ -300,59 +300,33 @@ video::-webkit-media-controls-start-playback-button { display: none !important; 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 /* =========================================================
-   WHAT I CREATE — bento grid (built in script.js)
+   WHAT I CREATE — reuses the pricing card system
 ========================================================= */
-.bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 190px; gap: 16px; }
-.bento-tile {
-  position: relative; overflow: hidden; isolation: isolate;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 22px; border-radius: var(--radius); color: var(--text);
-  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+.create-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (min-width: 720px) { .create-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.create-card {
+  position: relative;
+  padding: 26px 22px; border-radius: var(--radius);
+  background: linear-gradient(150deg, var(--card-bg-1), var(--card-bg-2));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  transition: transform .45s var(--ease), border-color .35s ease, box-shadow .45s var(--ease);
 }
-a.bento-tile:hover { transform: translateY(-6px); box-shadow: 0 25px 70px rgba(0,0,0,.22); }
-.bento-tile.big { grid-column: span 2; grid-row: span 2; padding: 28px; }
-.bento-tile.wide { grid-column: span 2; }
-.bento-tile .card-icon {
-  position: absolute; top: 20px; left: 20px;
-  width: 42px; height: 42px; border-radius: 13px;
+.create-card:hover { transform: translateY(-8px); border-color: var(--border-hover); box-shadow: 0 25px 70px rgba(0,0,0,.22); }
+.create-card .card-icon {
+  width: 42px; height: 42px; border-radius: 13px; margin-bottom: 18px;
   display: flex; align-items: center; justify-content: center;
   font-size: 17px; color: #fff;
   background: linear-gradient(135deg, var(--purple), var(--pink));
   box-shadow: 0 10px 26px rgba(141,107,255,.3);
   transition: transform .45s var(--ease);
 }
-a.bento-tile:hover .card-icon { transform: rotate(-6deg) scale(1.06); }
-.bento-tile h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-.bento-tile p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: 34ch; }
-.bento-tile .tile-cta {
-  position: absolute; top: 22px; right: 20px;
-  font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px;
-  opacity: 0; transform: translateX(-6px); transition: opacity .3s ease, transform .3s ease;
-}
-a.bento-tile:hover .tile-cta, a.bento-tile:focus-visible .tile-cta { opacity: 1; transform: none; }
-
-/* big tile: gradient panel with a large faded icon, always light text */
-.bento-tile.big::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.18), transparent 45%), linear-gradient(180deg, transparent 40%, rgba(8,6,14,.45) 100%); }
-.bento-tile.big .tile-art { position: absolute; right: -4%; bottom: 8%; z-index: -1; font-size: clamp(120px, 16vw, 210px); color: rgba(255,255,255,.1); transform: rotate(-12deg); transition: transform .8s var(--ease); }
-a.bento-tile.big:hover .tile-art { transform: rotate(-4deg) scale(1.05); }
-.bento-tile.big { background: linear-gradient(150deg, #7a52ff 0%, #9b3fd6 45%, #d23fa6 100%); }
-.bento-tile.big h3 { font-size: clamp(22px, 2.6vw, 30px); color: #fff; }
-.bento-tile.big p { color: rgba(255,255,255,.78); font-size: 14.5px; }
-.bento-tile.big .tile-cta { color: rgba(255,255,255,.8); }
-.bento-tile.big .card-icon { width: 48px; height: 48px; font-size: 19px; top: 24px; left: 24px; background: rgba(255,255,255,.18); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); backdrop-filter: blur(6px); }
-
-.bento-tile.more { align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--border); background: transparent; }
-.bento-tile.more span { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--muted); font-size: 14px; }
-
-@media (max-width: 860px) {
-  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 172px; gap: 12px; }
-  .bento-tile { padding: 18px; }
-  .bento-tile .card-icon { top: 16px; left: 16px; width: 38px; height: 38px; font-size: 15px; }
-  .bento-tile.big { grid-row: span 2; }
-  .bento-tile p { font-size: 12.5px; }
-  .bento-tile .tile-cta { display: none; }
-}
-@media (max-width: 400px) { .bento-tile:not(.big):not(.wide) p { display: none; } }
+.create-card:hover .card-icon { transform: rotate(-6deg) scale(1.06); }
+.create-card h3 { font-size: 15.5px; font-weight: 600; margin-bottom: 7px; }
+.create-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.create-card.more { display: flex; align-items: center; justify-content: center; text-align: center; background: transparent; border-style: dashed; }
+.create-card.more span { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--muted); font-size: 14px; }
 
 /* =========================================================
    HOW IT WORKS — grid steps like the pricing site
