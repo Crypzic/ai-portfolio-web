@@ -245,7 +245,7 @@
   var statusEl = document.getElementById('carouselStatus');
   var n = portfolioItems.length;
   var angleStep = 360 / n;
-  var radius = Math.round(270 / (2 * Math.tan(Math.PI / n)));
+  var radius = 0; // set by layoutRing() from the rendered card width
   var rotation = 0;
   var activeIndex = 0;
   var stageVisible = true;
@@ -257,7 +257,6 @@
   portfolioItems.forEach(function(item, i) {
     var el = document.createElement('div');
     el.className = 'carousel-item';
-    el.style.transform = 'rotateY(' + (i * angleStep) + 'deg) translateZ(' + radius + 'px)';
     // Gradient shows until the clip/poster loads (and stays if there's no src).
     el.style.background = 'linear-gradient(160deg,' + item.color1 + ',' + item.color2 + ')';
     el.setAttribute('aria-hidden', 'true');
@@ -305,6 +304,17 @@
   });
 
   var items = track.querySelectorAll('.carousel-item');
+
+  // Spread the cards round the ring with a gap of ~20% of a card, so neighbours sit apart.
+  function layoutRing() {
+    var cardW = items[0].offsetWidth || 270;
+    radius = Math.round((cardW * 1.2) / (2 * Math.tan(Math.PI / n)));
+    items.forEach(function(el, i) {
+      el.style.transform = 'rotateY(' + (i * angleStep) + 'deg) translateZ(' + radius + 'px)';
+    });
+  }
+  layoutRing();
+  window.addEventListener('resize', function() { layoutRing(); render(); });
   var dots = dotsWrap.querySelectorAll('button');
 
   // Play only the clip in the centre; pause the rest to save data and battery.

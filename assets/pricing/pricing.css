@@ -161,6 +161,19 @@
 .card-btn:hover { border-color: var(--purple); transform: translateY(-2px); }
 .price-card.selected .card-btn { border-color: transparent; color: #08080b; background: linear-gradient(90deg, var(--purple), var(--pink)); }
 
+/* Floating cards around the package grid (card styles live in style.css) */
+.pricing-stage { position: relative; }
+.pricing-stage .fact-card { z-index: 5; }
+.pc-1 { top: -30px; left: -44px; }
+.pc-2 { top: 64%; right: -64px; animation-delay: -2s; animation-duration: 8s; }
+.pc-3 { bottom: -44px; left: 12%; animation-delay: -4s; }
+@media (max-width: 1260px) { .pc-1 { left: -14px; } .pc-2 { right: -14px; } }
+@media (max-width: 860px) {
+  .pc-1 { top: -26px; left: auto; right: 0; }
+  .pc-2 { display: none; }
+  .pc-3 { bottom: -40px; left: 0; }
+}
+
 /* =========================================================
    GET STARTED (under the cards)
 ========================================================= */
