@@ -5,6 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Isaac D | AI Creator — Portfolio</title>
 <meta name="description" content="Cinematic AI-powered videos, ads and branded content for businesses that want to stand out.">
+<meta name="theme-color" content="#08080b">
+
+<!-- Set the theme before anything paints, so light-mode visitors don't see a dark flash. -->
+<script>
+  (function() {
+    var t = null;
+    try { t = localStorage.getItem('isaacd-theme'); } catch (e) {}
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+
+<!-- Favicon -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<!-- Link preview (WhatsApp, Instagram, X, iMessage…).
+     Replace https://YOUR-DOMAIN.com with your live site address once it's hosted —
+     preview images must be full absolute URLs or most apps ignore them. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Isaac D | AI Creator">
+<meta property="og:title" content="Isaac D | AI Creator — Cinematic AI Videos for Brands">
+<meta property="og:description" content="Your business doesn't need another boring ad. Cinematic AI-powered videos that people actually want to watch.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Isaac D | AI Creator — cinematic AI videos for brands">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Isaac D | AI Creator — Cinematic AI Videos for Brands">
+<meta name="twitter:description" content="Cinematic AI-powered videos that people actually want to watch.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/assets/og-image.jpg">
+
+<!-- Analytics (Google Analytics 4, free). Paste your Measurement ID (looks like G-XXXXXXXXXX)
+     below. Until you do, nothing loads and nothing is tracked. -->
+<script>window.GA_MEASUREMENT_ID = '';</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,8 +81,8 @@
     <h1>Your business doesn't need <span class="grad">another boring ad.</span></h1>
     <p class="sub">I create cinematic AI-powered videos that turn your products, services, and ideas into content people actually want to watch.</p>
     <div class="cta-row">
-      <a href="#work" class="btn btn-ghost">See My Work</a>
-      <a href="#start" class="btn btn-primary">Start a Project</a>
+      <a href="#work" class="btn btn-ghost" data-track="hero_cta" data-track-label="see_work">See My Work</a>
+      <a href="#start" class="btn btn-primary" data-track="hero_cta" data-track-label="start_project">Start a Project</a>
     </div>
   </div>
   <div class="scroll-cue"></div>
@@ -64,14 +102,16 @@
   </div>
 
   <div class="carousel-controls">
-    <button class="carousel-arrow" id="prevBtn" aria-label="Previous">
+    <button class="carousel-arrow" id="prevBtn" aria-label="Previous clip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="carousel-dots" id="carouselDots"></div>
-    <button class="carousel-arrow" id="nextBtn" aria-label="Next">
+    <div class="carousel-dots" id="carouselDots" role="group" aria-label="Choose a clip"></div>
+    <button class="carousel-arrow" id="nextBtn" aria-label="Next clip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
   </div>
+  <p class="carousel-hint">Tap the centre clip to watch with sound</p>
+  <p class="sr-only" id="carouselStatus" aria-live="polite"></p>
 </section>
 
 <!-- ============ WHAT I CREATE ============ -->
@@ -111,12 +151,43 @@
   </div>
 </section>
 
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="wrap about">
+    <!-- Your photo: save it as assets/images/isaac.jpg (square-ish, ~800px wide).
+         Until it exists, the gradient "ID" placeholder shows instead. -->
+    <div class="about-photo reveal">
+      <img src="assets/images/isaac.jpg" alt="Isaac D, AI video creator" loading="lazy" onerror="this.remove()">
+      <span class="about-initials" aria-hidden="true">ID</span>
+    </div>
+    <div class="about-copy reveal">
+      <div class="eyebrow">About Me</div>
+      <h2>Hi, I'm Isaac.</h2>
+      <p>I'm an AI video creator obsessed with one thing: making content that stops the scroll. I combine the latest AI video, image and voice tools with real creative direction — concept, story, pacing and edit — so your brand gets something that looks like a big-budget production, without the big-budget timeline.</p>
+      <p>Every project is built from scratch around your product and your audience. No templates, no recycled footage.</p>
+
+      <div class="tools">
+        <div class="tools-label">Made with</div>
+        <ul class="tools-list">
+          <li>Kling</li>
+          <li>Veo</li>
+          <li>Seedance 2.0</li>
+          <li>Runway</li>
+          <li>Google Flow</li>
+          <li>Midjourney</li>
+          <li>ElevenLabs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ START A PROJECT ============ -->
 <section id="start">
   <div class="final-cta reveal">
     <h2>Ready to make something people can't scroll past?</h2>
     <p>Tell me what you're selling, and let's turn it into something worth watching.</p>
-    <a href="https://wa.me/2347068716014?text=Hi%20Isaac%2C%20I%20want%20to%20start%20a%20project" target="_blank" rel="noopener" class="btn btn-dark">Start a Project →</a>
+    <a href="https://wa.me/2347068716014?text=Hi%20Isaac%2C%20I%20want%20to%20start%20a%20project" target="_blank" rel="noopener" class="btn btn-dark" data-track="whatsapp_click" data-track-label="final_cta">Start a Project →</a>
   </div>
 </section>
 
@@ -128,13 +199,35 @@
       <div class="footer-tag">AI-powered videos for businesses that want to stand out.</div>
     </div>
     <div class="footer-links">
-      <a href="https://www.tiktok.com/@cre8tiveisaac" target="_blank" rel="noopener">TikTok</a>
-      <a href="https://www.instagram.com/cre8tiveisaac/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://wa.me/2347068716014" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.tiktok.com/@cre8tiveisaac" target="_blank" rel="noopener" data-track="social_click" data-track-label="tiktok">TikTok</a>
+      <a href="https://www.instagram.com/cre8tiveisaac/" target="_blank" rel="noopener" data-track="social_click" data-track-label="instagram">Instagram</a>
+      <a href="https://wa.me/2347068716014" target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="footer">WhatsApp</a>
     </div>
     <div class="footer-copy">© 2026 Isaac D | AI Creator. All rights reserved.</div>
   </div>
 </footer>
+
+<!-- ============ CLIP PLAYER (opens when a clip is tapped) ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Clip player" hidden>
+  <div class="lightbox-backdrop" data-close></div>
+  <div class="lightbox-panel">
+    <button class="lightbox-close" data-close aria-label="Close player">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="lightbox-media">
+      <video id="lightboxVideo" playsinline webkit-playsinline loop disablepictureinpicture disableremoteplayback></video>
+      <button class="lightbox-sound" id="lightboxSound" aria-label="Mute">
+        <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
+      </button>
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-label" id="lightboxLabel"></div>
+      <p>Imagine this with <em>your</em> product in it.</p>
+      <a class="btn btn-primary" id="lightboxCta" href="#" data-track="whatsapp_click" target="_blank" rel="noopener">Want one like this? Let's talk →</a>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
