@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Isaac D | AI Creator — Portfolio</title>
+<meta name="description" content="Cinematic AI-powered videos, ads and branded content for businesses that want to stand out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="background">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="brand">Isaac D <span class="grad">| AI Creator</span></a>
+</nav>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+  <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+</button>
+
+<div id="top"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-media">
+    <div class="placeholder-plate"></div>
+    <!-- Stand-in clip so you can see the hero with real footage — replace src with your own ~10s montage. -->
+    <video id="hero-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback src="https://assets.mixkit.co/videos/35540/35540-360.mp4"></video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="eyebrow">AI Creator Portfolio</div>
+    <h1>Your business doesn't need <span class="grad">another boring ad.</span></h1>
+    <p class="sub">I create cinematic AI-powered videos that turn your products, services, and ideas into content people actually want to watch.</p>
+    <div class="cta-row">
+      <a href="#work" class="btn btn-ghost">See My Work</a>
+      <a href="#start" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<!-- ============ PORTFOLIO CAROUSEL ============ -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">See My Work</div>
+      <h2 class="section-label">What I Create, In Motion</h2>
+    </div>
+  </div>
+
+  <div class="carousel-stage" id="carouselStage">
+    <div class="carousel-track" id="carouselTrack"></div>
+  </div>
+
+  <div class="carousel-controls">
+    <button class="carousel-arrow" id="prevBtn" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="carousel-dots" id="carouselDots"></div>
+    <button class="carousel-arrow" id="nextBtn" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ============ WHAT I CREATE ============ -->
+<section class="section" id="create">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">What I Create</div>
+      <h2 class="section-label">Built For The Categories That Sell</h2>
+    </div>
+    <div class="create-grid" id="createGrid"></div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="section-label">How It Works</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>Tell Me What You Need</h3>
+        <p>Send me your product, service, idea or campaign brief.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h3>I Create</h3>
+        <p>I develop the concept, visuals, AI generation, voiceover and editing where needed.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h3>You Get Your Video</h3>
+        <p>You receive finished content ready for your marketing channels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ START A PROJECT ============ -->
+<section id="start">
+  <div class="final-cta reveal">
+    <h2>Ready to make something people can't scroll past?</h2>
+    <p>Tell me what you're selling, and let's turn it into something worth watching.</p>
+    <a href="https://wa.me/2347068716014?text=Hi%20Isaac%2C%20I%20want%20to%20start%20a%20project" target="_blank" rel="noopener" class="btn btn-dark">Start a Project →</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <div class="footer-name">Isaac D | AI Creator</div>
+      <div class="footer-tag">AI-powered videos for businesses that want to stand out.</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.tiktok.com/@cre8tiveisaac" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.instagram.com/cre8tiveisaac/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/2347068716014" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="footer-copy">© 2026 Isaac D | AI Creator. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
