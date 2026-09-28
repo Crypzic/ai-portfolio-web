@@ -81,6 +81,15 @@
     var p = v.play();
     if (p && p.catch) p.catch(function() {});
   }
+  // Make a paused video draw its opening frame as soon as its size is known, so it never
+  // sits as an empty box (some browsers only paint a frame after a seek).
+  function showFirstFrame(v) {
+    v.addEventListener('loadedmetadata', function() {
+      if (v.paused && v.currentTime < 0.05) {
+        try { v.currentTime = 0.1; } catch (e) {}
+      }
+    }, { once: true });
+  }
   // Pause a video while it's off-screen, resume when it comes back.
   function playWhileVisible(target, getVideo) {
     if (!('IntersectionObserver' in window)) return;
@@ -107,8 +116,8 @@
   // ---------- Portfolio clips ----------
   // Each clip loads from a fixed file name — just upload the file and it appears:
   //   assets/videos/<file>.mp4        the teaser shown in the carousel (and in the player)
-  //   assets/posters/<file>.jpg       optional still frame, shown while the clip loads
   //   assets/videos/<file>-full.mp4   optional longer version for the player: set full: true
+  // Cards show the clip's opening frame until they reach the centre, then play.
   // Until a video file exists, its card shows the coloured placeholder instead.
   // The carousel rebuilds itself from this list, so you can add or remove entries.
   var portfolioItems = [
@@ -123,7 +132,6 @@
   portfolioItems.forEach(function(item) {
     if (!item.file) return;
     item.src = item.src || 'assets/videos/' + item.file + '.mp4';
-    item.poster = item.poster || 'assets/posters/' + item.file + '.jpg';
     if (item.full === true) item.full = 'assets/videos/' + item.file + '-full.mp4';
   });
 
@@ -155,8 +163,8 @@
   var phoneVideo = document.getElementById('phoneVideo');
   var phoneItem = portfolioItems[5];
   if (phoneVideo && phoneItem && phoneItem.src) {
-    if (phoneItem.poster) phoneVideo.poster = phoneItem.poster;
-    phoneVideo.src = phoneItem.src;
+    phoneVideo.src = phoneItem.src + '#t=0.1';
+    showFirstFrame(phoneVideo);
     phoneVideo.addEventListener('error', function() { phoneVideo.remove(); });
     playWhileVisible(phoneVideo, function() { return phoneVideo; });
   }
@@ -278,10 +286,11 @@
       v.setAttribute('webkit-playsinline', '');
       v.setAttribute('disablepictureinpicture', '');
       v.setAttribute('disableremoteplayback', '');
-      // Only the centre clip downloads in full; the rest fetch just enough to show a frame.
+      // Only clips near the centre download in full; the rest fetch just enough to show
+      // their opening frame (#t=0.1 makes iPhones draw it too instead of a blank box).
       v.preload = 'metadata';
-      if (item.poster) v.poster = item.poster;
-      v.src = item.src;
+      v.src = item.src + '#t=0.1';
+      showFirstFrame(v);
       // No file uploaded yet (or it failed): drop the video so the gradient placeholder shows.
       v.addEventListener('error', function() {
         item.missing = true;
@@ -331,17 +340,20 @@
   window.addEventListener('resize', function() { layoutRing(); render(); });
   var dots = dotsWrap.querySelectorAll('button');
 
-  // Play only the clip in the centre; pause the rest to save data and battery.
+  // Only the centre clip plays. The cards either side stay paused on their opening frame
+  // and are fully preloaded (two out each way), so a swipe starts playback instantly.
+  function ringDistance(i) {
+    var d = Math.abs(i - activeIndex) % n;
+    return Math.min(d, n - d);
+  }
   function syncCarouselPlayback() {
     items.forEach(function(el, i) {
       var v = el.querySelector('video');
       if (!v) return;
-      if (i === activeIndex && stageVisible && !lightboxOpen) {
-        v.preload = 'auto';
-        tryPlay(v);
-      } else {
-        v.pause();
-      }
+      var dist = ringDistance(i);
+      if (dist <= 2) v.preload = 'auto';
+      if (dist === 0 && stageVisible && !lightboxOpen) tryPlay(v);
+      else v.pause();
     });
   }
 

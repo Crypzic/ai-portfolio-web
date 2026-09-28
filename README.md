@@ -7,21 +7,23 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
 1. **Your clips** — just upload files with these exact names. No code changes needed; any slot
    without a file shows its coloured placeholder until you add it.
 
-   | Where it shows | Video (required) | Still image (optional) |
-   |---|---|---|
-   | Hero background | `assets/videos/hero.mp4` | `assets/posters/hero.jpg` |
-   | Carousel: Product Ads | `assets/videos/product-ads.mp4` | `assets/posters/product-ads.jpg` |
-   | Carousel: Fashion | `assets/videos/fashion.mp4` | `assets/posters/fashion.jpg` |
-   | Carousel: Automotive | `assets/videos/automotive.mp4` | `assets/posters/automotive.jpg` |
-   | Carousel: Real Estate | `assets/videos/real-estate.mp4` | `assets/posters/real-estate.jpg` |
-   | Carousel: Skincare | `assets/videos/skincare.mp4` | `assets/posters/skincare.jpg` |
-   | Carousel: UGC / Creators (also plays in the "Built to perform" phone) | `assets/videos/ugc.mp4` | `assets/posters/ugc.jpg` |
-   | Carousel: Social Content | `assets/videos/social.mp4` | `assets/posters/social.jpg` |
+   | Where it shows | File |
+   |---|---|
+   | Hero background | `assets/videos/hero.mp4` |
+   | Carousel: Product Ads | `assets/videos/product-ads.mp4` |
+   | Carousel: Fashion | `assets/videos/fashion.mp4` |
+   | Carousel: Automotive | `assets/videos/automotive.mp4` |
+   | Carousel: Real Estate | `assets/videos/real-estate.mp4` |
+   | Carousel: Skincare | `assets/videos/skincare.mp4` |
+   | Carousel: UGC / Creators (also plays in the "Built to perform" phone) | `assets/videos/ugc.mp4` |
+   | Carousel: Social Content | `assets/videos/social.mp4` |
 
    - Names are **lowercase** and must match exactly (`.mp4`, not `.MP4` or `.mov`).
-   - Export as **MP4 (H.264 + AAC)**. Carousel teasers: 720p, 5–8 s, aim for **under 3 MB** each.
-     Hero: 1080p, under ~6 MB, no audio needed.
-   - Still images: JPG, ~600px wide (the first frame of the clip works well).
+   - Export as **MP4 (H.264)** with **"Web Optimized" / fast start** on, so playback can begin
+     before the whole file downloads. Carousel clips: 720p, aim for **under 3 MB** each.
+     Hero: 720p–1080p, **under ~4 MB**, no audio needed.
+   - Cards show each clip's opening frame until they reach the centre, then play. No
+     separate still images are needed.
    - Longer version for the player (optional): upload `assets/videos/<name>-full.mp4` and add
      `full: true` to that clip's entry in `portfolioItems` in `script.js`.
    - To add or rename categories, edit `portfolioItems` in `script.js`.
