@@ -484,8 +484,14 @@ footer { padding: 45px 0 calc(45px + env(safe-area-inset-bottom, 0px)); border-t
 .footer-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; }
 .footer-tag { color: var(--faint); font-size: 12.5px; margin-top: 5px; }
 .footer-links { display: flex; gap: 26px; }
-.footer-links a i { margin-right: 6px; font-size: 14px; }
-.footer-links a { color: var(--muted); font-size: 13px; transition: color .25s ease, transform .25s ease; display: inline-block; }
+.footer-links a i { width: 16px; text-align: center; font-size: 14px; }
+.footer-links a { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: var(--muted); font-size: 13px; transition: color .25s ease, transform .25s ease; }
+/* Phones: one link per line */
+@media (max-width: 860px) {
+  .footer-links { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-links a { font-size: 14px; }
+  .footer-links a:hover { transform: translateX(3px); }
+}
 .footer-links a:hover { color: var(--text); transform: translateY(-2px); }
 .footer-copy { width: 100%; margin-top: 5px; color: var(--faint); font-size: 12px; }
 @media (max-width: 860px) { .footer-inner { flex-direction: column; align-items: flex-start; } }
