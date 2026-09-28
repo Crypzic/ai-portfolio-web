@@ -28,8 +28,8 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
 Two hidden pages — nothing on the site links to them and search engines are told not to list
 them (`noindex` meta tag + `X-Robots-Tag` header in `vercel.json`). Send the link directly:
 
-- Naira: `/rates-ngn-39gpn4/`
-- Dollars: `/rates-usd-aqdkhs/`
+- Naira: `/ngn-price`
+- Dollars: `/usd-price`
 
 To change prices or packages, edit the `window.PRICELIST` block at the bottom of each page
 (`amount` sets the price shown on the card; `message` is the WhatsApp text). Shared styles and
