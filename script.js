@@ -121,7 +121,7 @@
   ];
 
   // "What I Create" bento grid. `clip` is the portfolioItems index the tile jumps to in the
-  // carousel; `size` is 'big' (2x2, plays that clip behind it), 'wide' (2x1) or normal.
+  // carousel; `size` is 'big' (2x2), 'wide' (2x1) or normal.
   var createCategories = [
     { icon: 'fa-bag-shopping',  title: 'Product Ads',          desc: 'Cinematic product-focused advertising that makes people want it now.', clip: 0, size: 'big' },
     { icon: 'fa-shirt',         title: 'Fashion',              desc: 'Campaign-style fashion and clothing content.', clip: 1 },
@@ -133,7 +133,6 @@
   ];
 
   var createGrid = document.getElementById('createGrid');
-  var bentoVideo = null;
   createCategories.forEach(function(c) {
     var el = document.createElement('a');
     el.href = '#work';
@@ -143,15 +142,11 @@
       '<span class="tile-cta" aria-hidden="true">Watch <i class="fa-solid fa-arrow-right"></i></span><h3></h3><p></p>';
     el.querySelector('h3').textContent = c.title;
     el.querySelector('p').textContent = c.desc;
-    var item = portfolioItems[c.clip];
-    if (c.size === 'big' && item && item.src) {
-      bentoVideo = document.createElement('video');
-      bentoVideo.muted = true; bentoVideo.loop = true; bentoVideo.playsInline = true;
-      bentoVideo.setAttribute('playsinline', ''); bentoVideo.setAttribute('webkit-playsinline', '');
-      bentoVideo.preload = 'metadata';
-      if (item.poster) bentoVideo.poster = item.poster;
-      bentoVideo.src = item.src;
-      el.insertBefore(bentoVideo, el.firstChild);
+    if (c.size === 'big') {
+      var art = document.createElement('i');
+      art.className = 'fa-solid ' + c.icon + ' tile-art';
+      art.setAttribute('aria-hidden', 'true');
+      el.appendChild(art);
     }
     el.addEventListener('click', function(e) {
       e.preventDefault();
@@ -164,7 +159,6 @@
   moreEl.className = 'bento-tile more';
   moreEl.innerHTML = '<span><i class="fa-solid fa-plus" aria-hidden="true"></i> And more</span>';
   createGrid.appendChild(moreEl);
-  if (bentoVideo) playWhileVisible(bentoVideo, function() { return bentoVideo; });
 
   // "Built to perform" phone mock plays the UGC clip (index 5) while on screen.
   var phoneVideo = document.getElementById('phoneVideo');

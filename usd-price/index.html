@@ -60,6 +60,8 @@
   <a href="../#work" class="nav-back"><i class="fa-solid fa-play" aria-hidden="true"></i> See my work</a>
 </nav>
 
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
   <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -76,12 +78,19 @@
       <a href="../#work" class="btn btn-ghost"><i class="fa-solid fa-play" aria-hidden="true"></i> See My Work</a>
     </div>
   </div>
-  <div class="portrait">
-    <img src="../assets/images/isaac.jpg" alt="Isaac D, AI video creator">
-    <div class="portrait-caption">
-      <strong>Isaac D — AI Creator</strong>
-      Video, Ads &amp; Branded Content
+  <div class="portrait-wrap">
+    <div class="portrait">
+      <img src="../assets/images/isaac.jpg" alt="Isaac D, AI video creator">
+      <div class="portrait-caption">
+        <strong>Isaac D — AI Creator</strong>
+        Video, Ads &amp; Branded Content
+      </div>
     </div>
+    <!-- Floating fact cards (same as the main site). Keep them honest. -->
+    <div class="fact-card glass float fc-1" data-depth="0.6"><span class="fact-icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span><div><strong>48h</strong><span>Fast delivery</span></div></div>
+    <div class="fact-card glass float fc-2" data-depth="0.9"><span class="fact-icon"><i class="fa-solid fa-crop-simple" aria-hidden="true"></i></span><div><strong>9:16 · 16:9 · 1:1</strong><span>Every format</span></div></div>
+    <div class="fact-card glass float fc-3" data-depth="0.4"><span class="fact-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span><div><strong>7+ AI tools</strong><span>One creative eye</span></div></div>
+    <div class="fact-card glass float fc-4" data-depth="0.75"><span class="fact-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span><div><strong>100% original</strong><span>Built from scratch</span></div></div>
   </div>
 </header>
 

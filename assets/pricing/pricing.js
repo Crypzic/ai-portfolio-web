@@ -51,6 +51,47 @@
   }, { passive: true });
   onScrollFrame();
 
+  // ---------- Floating fact cards + cursor glow (same behaviour as the main site) ----------
+  var floats = Array.prototype.slice.call(document.querySelectorAll('.float[data-depth]'));
+  var mouseX = 0, mouseY = 0, floatTicking = false;
+  function updateFloats() {
+    floatTicking = false;
+    if (reduceMotion) return;
+    var vh = window.innerHeight;
+    var parentShift = new Map();
+    floats.forEach(function(el) {
+      var parent = el.parentElement;
+      if (!parentShift.has(parent)) {
+        var r = parent.getBoundingClientRect();
+        parentShift.set(parent, r.bottom < 0 || r.top > vh ? null : ((vh / 2) - (r.top + r.height / 2)) / vh);
+      }
+      var shift = parentShift.get(parent);
+      if (shift === null) return;
+      var d = parseFloat(el.getAttribute('data-depth')) || 0.5;
+      el.style.translate = (mouseX * d * 18).toFixed(1) + 'px ' + (shift * d * -60 + mouseY * d * 18).toFixed(1) + 'px';
+    });
+  }
+  function requestFloats() {
+    if (!floatTicking) { floatTicking = true; requestAnimationFrame(updateFloats); }
+  }
+  window.addEventListener('scroll', requestFloats, { passive: true });
+  window.addEventListener('resize', requestFloats);
+  requestFloats();
+
+  var glow = document.getElementById('cursorGlow');
+  if (glow && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    window.addEventListener('pointermove', function(e) {
+      mouseX = e.clientX / window.innerWidth - 0.5;
+      mouseY = e.clientY / window.innerHeight - 0.5;
+      if (!reduceMotion) {
+        glow.classList.add('on');
+        glow.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+      }
+      requestFloats();
+    }, { passive: true });
+    document.addEventListener('pointerleave', function() { glow.classList.remove('on'); });
+  }
+
   // ---------- Scroll reveal ----------
   var revealEls = document.querySelectorAll('.reveal');
   var io = new IntersectionObserver(function(entries) {

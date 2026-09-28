@@ -28,8 +28,14 @@
 .price-hero p { max-width: 540px; font-size: 17px; line-height: 1.75; color: var(--muted); }
 .price-hero .cta-row { justify-content: flex-start; }
 
+.portrait-wrap { position: relative; width: 100%; max-width: 420px; margin-left: auto; }
+.portrait-wrap .fact-card { opacity: 0; animation: factIn .8s var(--ease) forwards, bob 7s ease-in-out infinite; animation-delay: .9s, 0s; }
+.portrait-wrap .fc-2 { animation-delay: 1.05s, -2s; }
+.portrait-wrap .fc-3 { animation-delay: 1.2s, -4s; }
+.portrait-wrap .fc-4 { animation-delay: 1.35s, -1s; }
+@keyframes factIn { from { opacity: 0; } to { opacity: 1; } }
 .portrait {
-  position: relative; width: 100%; max-width: 420px; margin-left: auto;
+  position: relative; width: 100%;
   aspect-ratio: 3 / 4; border-radius: 26px; overflow: hidden;
   border: 1px solid var(--border); background: #120e1f;
   box-shadow: 0 30px 100px rgba(0,0,0,.4);
@@ -60,7 +66,7 @@
   .price-hero .hero-copy { text-align: center; }
   .price-hero p { margin: 0 auto; }
   .price-hero .cta-row { justify-content: center; }
-  .portrait { max-width: 360px; margin: 0 auto; }
+  .portrait-wrap { max-width: 340px; margin: 0 auto; }
 }
 
 /* =========================================================
