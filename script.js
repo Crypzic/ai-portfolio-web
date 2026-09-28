@@ -120,32 +120,144 @@
     { label: 'Social Content',  color1: '#6f55ff', color2: '#2a1a4a', src: 'https://assets.mixkit.co/videos/42291/42291-360.mp4' }
   ];
 
+  // "What I Create" bento grid. `clip` is the portfolioItems index the tile jumps to in the
+  // carousel; `size` is 'big' (2x2, plays that clip behind it), 'wide' (2x1) or normal.
   var createCategories = [
-    { icon: 'fa-bag-shopping', title: 'Product Ads', desc: 'Cinematic product-focused advertising.' },
-    { icon: 'fa-shirt', title: 'Fashion', desc: 'Campaign-style fashion and clothing content.' },
-    { icon: 'fa-car', title: 'Automotive', desc: 'Vehicle showcases and commercial videos.' },
-    { icon: 'fa-house', title: 'Real Estate', desc: 'Cinematic property walkthroughs and promos.' },
-    { icon: 'fa-spa', title: 'Beauty & Skincare', desc: 'Premium product and application visuals.' },
-    { icon: 'fa-user-check', title: 'UGC / AI Creators', desc: 'Creator-style content for social ads.' },
-    { icon: 'fa-mobile-screen', title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.' }
+    { icon: 'fa-bag-shopping',  title: 'Product Ads',          desc: 'Cinematic product-focused advertising that makes people want it now.', clip: 0, size: 'big' },
+    { icon: 'fa-shirt',         title: 'Fashion',              desc: 'Campaign-style fashion and clothing content.', clip: 1 },
+    { icon: 'fa-car',           title: 'Automotive',           desc: 'Vehicle showcases and commercial videos.', clip: 2 },
+    { icon: 'fa-house',         title: 'Real Estate',          desc: 'Cinematic property walkthroughs and promos.', clip: 3 },
+    { icon: 'fa-spa',           title: 'Beauty & Skincare',    desc: 'Premium product and application visuals.', clip: 4 },
+    { icon: 'fa-user-check',    title: 'UGC / AI Creators',    desc: 'Creator-style content for social ads, without booking a creator.', clip: 5, size: 'wide' },
+    { icon: 'fa-mobile-screen', title: 'Social Media Content', desc: 'Short-form videos for TikTok and Instagram.', clip: 6 }
   ];
 
   var createGrid = document.getElementById('createGrid');
+  var bentoVideo = null;
   createCategories.forEach(function(c) {
-    var el = document.createElement('div');
-    el.className = 'create-card';
-    el.innerHTML = '<div class="card-icon"><i class="fa-solid ' + c.icon + '" aria-hidden="true"></i></div><h3></h3><p></p>';
+    var el = document.createElement('a');
+    el.href = '#work';
+    el.className = 'bento-tile glass' + (c.size ? ' ' + c.size : '');
+    el.setAttribute('aria-label', c.title + ': watch the clip');
+    el.innerHTML = '<div class="card-icon"><i class="fa-solid ' + c.icon + '" aria-hidden="true"></i></div>' +
+      '<span class="tile-cta" aria-hidden="true">Watch <i class="fa-solid fa-arrow-right"></i></span><h3></h3><p></p>';
     el.querySelector('h3').textContent = c.title;
     el.querySelector('p').textContent = c.desc;
+    var item = portfolioItems[c.clip];
+    if (c.size === 'big' && item && item.src) {
+      bentoVideo = document.createElement('video');
+      bentoVideo.muted = true; bentoVideo.loop = true; bentoVideo.playsInline = true;
+      bentoVideo.setAttribute('playsinline', ''); bentoVideo.setAttribute('webkit-playsinline', '');
+      bentoVideo.preload = 'metadata';
+      if (item.poster) bentoVideo.poster = item.poster;
+      bentoVideo.src = item.src;
+      el.insertBefore(bentoVideo, el.firstChild);
+    }
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      goTo(c.clip);
+      document.getElementById('work').scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    });
     createGrid.appendChild(el);
   });
   var moreEl = document.createElement('div');
-  moreEl.className = 'create-card more';
+  moreEl.className = 'bento-tile more';
   moreEl.innerHTML = '<span><i class="fa-solid fa-plus" aria-hidden="true"></i> And more</span>';
   createGrid.appendChild(moreEl);
+  if (bentoVideo) playWhileVisible(bentoVideo, function() { return bentoVideo; });
+
+  // "Built to perform" phone mock plays the UGC clip (index 5) while on screen.
+  var phoneVideo = document.getElementById('phoneVideo');
+  var phoneItem = portfolioItems[5];
+  if (phoneVideo && phoneItem && phoneItem.src) {
+    if (phoneItem.poster) phoneVideo.poster = phoneItem.poster;
+    phoneVideo.src = phoneItem.src;
+    playWhileVisible(phoneVideo, function() { return phoneVideo; });
+  }
 
   function whatsappLink(message) {
     return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+  }
+
+  // ================= FLOATING ELEMENTS =================
+  // Each .float drifts with scroll (relative to its section) and, on desktop, with the mouse.
+  // data-depth controls how far it moves. The gentle bob is a CSS animation on top.
+  var floats = Array.prototype.slice.call(document.querySelectorAll('.float[data-depth]'));
+  var mouseX = 0, mouseY = 0, floatTicking = false;
+  var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  function updateFloats() {
+    floatTicking = false;
+    if (prefersReducedMotion()) return;
+    var vh = window.innerHeight;
+    var parentShift = new Map();
+    floats.forEach(function(el) {
+      var parent = el.parentElement;
+      if (!parentShift.has(parent)) {
+        var r = parent.getBoundingClientRect();
+        // -1 when the section is below the viewport centre, +1 above it
+        parentShift.set(parent, r.bottom < 0 || r.top > vh ? null : ((vh / 2) - (r.top + r.height / 2)) / vh);
+      }
+      var shift = parentShift.get(parent);
+      if (shift === null) return;
+      var d = parseFloat(el.getAttribute('data-depth')) || 0.5;
+      var x = mouseX * d * 18;
+      var y = shift * d * -60 + mouseY * d * 18;
+      el.style.translate = x.toFixed(1) + 'px ' + y.toFixed(1) + 'px';
+    });
+  }
+  function requestFloats() {
+    if (!floatTicking) { floatTicking = true; requestAnimationFrame(updateFloats); }
+  }
+  window.addEventListener('scroll', requestFloats, { passive: true });
+  window.addEventListener('resize', requestFloats);
+  requestFloats();
+
+  // Cursor glow (desktop only)
+  var glow = document.getElementById('cursorGlow');
+  if (finePointer && glow) {
+    window.addEventListener('pointermove', function(e) {
+      mouseX = e.clientX / window.innerWidth - 0.5;
+      mouseY = e.clientY / window.innerHeight - 0.5;
+      if (!prefersReducedMotion()) {
+        glow.classList.add('on');
+        glow.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+      }
+      requestFloats();
+    }, { passive: true });
+    document.addEventListener('pointerleave', function() { glow.classList.remove('on'); });
+  }
+
+  // Example stat cards: count up once when scrolled into view
+  function formatCount(n, fmt) {
+    if (fmt === 'k') return n >= 1000 ? (n / 1000).toFixed(1) + 'K' : Math.round(n).toString();
+    if (fmt === 'dec') return n.toFixed(1);
+    return Math.round(n).toString();
+  }
+  var counters = document.querySelectorAll('[data-count-to]');
+  var bars = document.querySelectorAll('.stat-bar');
+  function finishCounters() {
+    counters.forEach(function(el) { el.textContent = formatCount(parseFloat(el.getAttribute('data-count-to')), el.getAttribute('data-format')); });
+    bars.forEach(function(b) { b.classList.add('on'); });
+  }
+  var resultsVisual = document.querySelector('.results-visual');
+  if (resultsVisual && 'IntersectionObserver' in window && !prefersReducedMotion()) {
+    var countIo = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) return;
+      countIo.disconnect();
+      bars.forEach(function(b) { b.classList.add('on'); });
+      var start = performance.now(), duration = 1600;
+      (function step(now) {
+        var p = Math.min((now - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        counters.forEach(function(el) {
+          el.textContent = formatCount(parseFloat(el.getAttribute('data-count-to')) * eased, el.getAttribute('data-format'));
+        });
+        if (p < 1) requestAnimationFrame(step); else finishCounters();
+      })(start);
+    }, { threshold: 0.35 });
+    countIo.observe(resultsVisual);
+  } else {
+    finishCounters();
   }
 
   // ================= 3D CYLINDRICAL CAROUSEL =================
