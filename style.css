@@ -334,7 +334,11 @@ video::-webkit-media-controls-start-playback-button { display: none !important; 
 ========================================================= */
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr; gap: 38px; max-width: 480px; margin: 0 auto; } }
-.step-num i { font-size: 17px; letter-spacing: 0; background: linear-gradient(135deg, var(--purple), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.step-num i {
+  /* Taller box than the glyph so the gradient (clipped to the text box) covers the whole icon. */
+  display: inline-block; font-size: 17px; line-height: 1.5; padding: 0 2px; letter-spacing: 0;
+  background: linear-gradient(135deg, var(--purple), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
 .step-num { display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; margin-bottom: 16px; border-bottom: 1px solid var(--border); color: var(--purple); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .12em; }
 .step h3 { margin-bottom: 10px; font-size: 19px; font-weight: 600; }
 .step p { color: var(--muted); font-size: 14px; line-height: 1.65; }
