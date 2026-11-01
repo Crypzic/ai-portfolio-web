@@ -1,4 +1,4 @@
-# Isaac D | AI Creator — Portfolio
+# Isaac | AI Video Creator — Portfolio
 
 Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any static host.
 
