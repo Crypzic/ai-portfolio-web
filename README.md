@@ -38,6 +38,27 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or upload the folder to any 
    `index.html` and both pricelist pages). Tracked events: `clip_open`, `whatsapp_click`,
    `social_click`, `hero_cta`, and on the pricelists `package_select`.
 
+## Admin dashboard (`/admin`)
+
+Your own stats page: visitors, page views, WhatsApp clicks per button, clips opened, hero
+buttons, pricelist package picks, traffic sources, countries, devices, a 30-day chart and a
+live activity feed. Runs free on Vercel Hobby + Upstash Redis.
+
+**One-time setup in Vercel:**
+
+1. Project → **Storage** → **Create Database** → **Upstash** (Redis), free plan → connect it to
+   this project. This adds the `KV_REST_API_URL` / `KV_REST_API_TOKEN` variables automatically.
+2. Project → **Settings → Environment Variables** → add `ADMIN_PASSWORD` with a long password.
+3. **Redeploy** (Deployments → ⋯ → Redeploy) so the new variables take effect.
+
+Then open `/admin` and log in. On each phone/laptop you check the site from, tick
+**"Don't count my own visits on this device"** so you don't inflate your numbers.
+
+- Tag links you share to see them as a source: `https://ai-skill-website.vercel.app/?ref=instagram_bio`.
+- Stats are kept for 40 days. Days are counted in Lagos time.
+- GA4 keeps running alongside it. Both get the same events from `trackEvent` in `script.js`
+  and `assets/pricing/pricing.js`; the dashboard side lives in `assets/track.js` and `api/`.
+
 ## Pricelists (unlisted)
 
 Two hidden pages — nothing on the site links to them and search engines are told not to list

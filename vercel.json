@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/(ngn-price|usd-price)(.*)",
+      "source": "/(ngn-price|usd-price|admin)(.*)",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
       ]

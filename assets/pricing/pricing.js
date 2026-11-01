@@ -23,6 +23,7 @@
   }
   function trackEvent(name, params) {
     if (window.gtag) window.gtag('event', name, params || {});
+    if (window.siteTrack) window.siteTrack(name, params);
   }
 
   // ---------- Theme ----------

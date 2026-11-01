@@ -19,6 +19,7 @@
   }
   function trackEvent(name, params) {
     if (window.gtag) window.gtag('event', name, params || {});
+    if (window.siteTrack) window.siteTrack(name, params);
   }
   document.addEventListener('click', function(e) {
     var el = e.target.closest && e.target.closest('[data-track]');

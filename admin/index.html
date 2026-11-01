@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site Dashboard | Isaac D</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#08080b">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<script>
+  (function() {
+    var t = null;
+    try { t = localStorage.getItem('isaacd-theme'); } catch (e) {}
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080b; --surface: #111017; --surface-2: #17151f;
+    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.16);
+    --text: #f5f4f7; --muted: #9b99a6; --faint: #686672;
+    --purple: #8d6bff; --pink: #e84fd8; --bar: #8d6bff; --bar-soft: rgba(141,107,255,.22);
+    --good: #3ddc97; --bad: #ff6b81;
+  }
+  :root[data-theme="light"] {
+    --bg: #faf9fc; --surface: #ffffff; --surface-2: #f4f2f9;
+    --border: rgba(20,15,35,0.09); --border-hover: rgba(20,15,35,0.18);
+    --text: #17141f; --muted: #5f5a6e; --faint: #8a8496;
+    --bar: #6f4ff0; --bar-soft: rgba(111,79,240,.16);
+    --good: #138a5a; --bad: #c8304a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  h1, h2, .num { font-family: 'Space Grotesk', sans-serif; }
+  button, input { font: inherit; color: inherit; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
+
+  /* Login */
+  .login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+  .login form { width: 100%; max-width: 360px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; display: grid; gap: 14px; }
+  .login h1 { font-size: 22px; }
+  .login p { color: var(--muted); font-size: 14px; }
+  .login input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-hover); background: var(--surface-2); outline: none; }
+  .login input:focus { border-color: var(--purple); }
+  .err { color: var(--bad); font-size: 13px; min-height: 18px; }
+  .btn { border: 0; cursor: pointer; border-radius: 12px; padding: 12px 16px; font-weight: 600; background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; font-weight: 500; font-size: 14px; }
+  .btn-ghost:hover { border-color: var(--border-hover); }
+
+  /* Header */
+  header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  header h1 { font-size: 22px; }
+  header h1 span { color: var(--purple); }
+  .updated { color: var(--faint); font-size: 13px; margin-top: 2px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 3px; }
+  .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 9px; cursor: pointer; font-size: 14px; color: var(--muted); }
+  .seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); font-weight: 600; }
+
+  /* KPI tiles */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 18px; min-width: 0; }
+  .kpi .label { color: var(--muted); font-size: 13px; }
+  .kpi .num { font-size: 32px; font-weight: 600; margin-top: 6px; letter-spacing: -0.02em; }
+  .kpi .sub { color: var(--faint); font-size: 12px; margin-top: 2px; }
+
+  /* Chart */
+  .chart-card { margin-bottom: 12px; }
+  .card h2 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; gap: 8px; }
+  .card h2 small { color: var(--faint); font-weight: 400; font-family: 'Inter', sans-serif; font-size: 12px; }
+  .chart { position: relative; height: 200px; }
+  .chart svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .chart .grid { stroke: var(--border); }
+  .chart .axis { fill: var(--faint); font-size: 11px; }
+  .chart .b { fill: var(--bar); pointer-events: none; }
+  .chart .hit { fill: transparent; cursor: default; }
+  .chart .hit:hover + .b, .chart .b.on { fill: var(--pink); }
+  .tip { position: absolute; pointer-events: none; background: var(--surface-2); border: 1px solid var(--border-hover); border-radius: 10px; padding: 8px 10px; font-size: 12px; white-space: nowrap; transform: translate(-50%, -100%); display: none; z-index: 2; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .tip b { display: block; margin-bottom: 2px; }
+  .tip span { color: var(--muted); }
+
+  /* Breakdown lists */
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .rows { list-style: none; display: grid; gap: 8px; }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: 14px; }
+  .rows .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rows .val { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .rows .track { grid-column: 1 / -1; height: 4px; border-radius: 4px; background: var(--bar-soft); overflow: hidden; }
+  .rows .fill { height: 100%; border-radius: 4px; background: var(--bar); }
+  .empty { color: var(--faint); font-size: 14px; }
+
+  /* Live feed */
+  .feed { list-style: none; display: grid; gap: 2px; max-height: 420px; overflow-y: auto; }
+  .feed li { display: grid; grid-template-columns: 70px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .feed li:last-child { border-bottom: 0; }
+  .feed time { color: var(--faint); font-size: 12px; padding-top: 2px; }
+  .feed .what { font-weight: 500; }
+  .feed .meta { color: var(--muted); font-size: 12px; margin-top: 1px; }
+
+  .setting { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+  .setting input { width: 18px; height: 18px; accent-color: var(--purple); }
+  .notice { background: var(--surface); border: 1px solid var(--bad); color: var(--text); border-radius: 14px; padding: 12px 14px; margin-bottom: 12px; font-size: 14px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="login" id="login">
+  <form id="loginForm">
+    <h1>Site dashboard</h1>
+    <p>Enter your admin password to see your stats.</p>
+    <input type="password" id="pw" autocomplete="current-password" placeholder="Password" required>
+    <div class="err" id="loginErr"></div>
+    <button class="btn" type="submit">Open dashboard</button>
+  </form>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <div>
+      <h1>Isaac D <span>| Dashboard</span></h1>
+      <div class="updated" id="updated">Loading…</div>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Date range">
+        <button data-range="1" aria-pressed="false">Today</button>
+        <button data-range="7" aria-pressed="true">7 days</button>
+        <button data-range="30" aria-pressed="false">30 days</button>
+      </div>
+      <button class="btn-ghost btn" id="refresh">Refresh</button>
+      <button class="btn-ghost btn" id="logout">Log out</button>
+    </div>
+  </header>
+
+  <div class="notice" id="notice" hidden></div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="card chart-card">
+    <h2>Visitors per day <small id="chartNote"></small></h2>
+    <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
+  </section>
+
+  <section class="grid3" id="lists"></section>
+
+  <section class="grid3">
+    <div class="card">
+      <h2>Live activity <small>last 50 events</small></h2>
+      <ul class="feed" id="feed"></ul>
+    </div>
+    <div class="card">
+      <h2>Settings</h2>
+      <label class="setting"><input type="checkbox" id="notrack"> Don't count my own visits on this device</label>
+      <p class="empty" style="margin-top:10px">Turn this on in each browser you use to check your site, so your visits don't inflate the numbers.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var KEY = 'isaacd-admin';
+  var range = 7, data = null, timer = null;
+  var $ = function(id) { return document.getElementById(id); };
+
+  function store(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fmt(n) { return Number(n || 0).toLocaleString(); }
+
+  // ---------- Names ----------
+  var EVENT_NAMES = {
+    page_view: 'Page view', hero_cta: 'Hero button', whatsapp_click: 'WhatsApp click',
+    social_click: 'Social click', clip_open: 'Clip opened', package_select: 'Package picked'
+  };
+  var LABEL_NAMES = {
+    see_work: 'See My Work', start_project: 'Start a Project', final_cta: 'Bottom "Start a Project"',
+    footer: 'Footer WhatsApp link', tiktok: 'TikTok'
+  };
+  var PAGE_NAMES = { '/': 'Homepage', '/ngn-price': 'Pricelist (₦)', '/usd-price': 'Pricelist ($)', other: 'Other' };
+  var regionNames = null;
+  try { regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); } catch (e) {}
+
+  function labelName(l) {
+    if (LABEL_NAMES[l]) return LABEL_NAMES[l];
+    if (/^pricelist_/.test(l)) return 'Pricelist: ' + l.slice(10);
+    return l.charAt(0).toUpperCase() + l.slice(1).replace(/_/g, ' ');
+  }
+  function flag(cc) {
+    if (!/^[A-Z]{2}$/.test(cc)) return '🌐';
+    return String.fromCodePoint(cc.charCodeAt(0) + 127397, cc.charCodeAt(1) + 127397);
+  }
+  function countryName(cc) {
+    if (!/^[A-Z]{2}$/.test(cc)) return 'Unknown';
+    try { return regionNames ? regionNames.of(cc) : cc; } catch (e) { return cc; }
+  }
+  function ago(t) {
+    var s = Math.max(0, Math.round((Date.now() - t) / 1000));
+    if (s < 60) return s + 's ago';
+    if (s < 3600) return Math.floor(s / 60) + 'm ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    return Math.floor(s / 86400) + 'd ago';
+  }
+
+  // ---------- Data ----------
+  function fetchStats(pw) {
+    return fetch('/api/stats', { headers: { Authorization: 'Bearer ' + pw }, cache: 'no-store' })
+      .then(function(r) { return r.json().catch(function() { return {}; }).then(function(j) { j._status = r.status; return j; }); });
+  }
+
+  function refresh() {
+    var pw = load(KEY);
+    if (!pw) return showLogin();
+    fetchStats(pw).then(function(j) {
+      if (j._status === 401) { store(KEY, null); return showLogin('Your session expired. Log in again.'); }
+      if (j._status !== 200) { $('notice').textContent = j.error || 'Could not load stats.'; $('notice').hidden = false; return; }
+      $('notice').hidden = true;
+      data = j;
+      render();
+      $('updated').textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' · refreshes every 30s';
+    }).catch(function() {
+      $('notice').textContent = 'Could not reach the server. Check your connection.';
+      $('notice').hidden = false;
+    });
+  }
+
+  // Sum the counters across the selected range.
+  function totals() {
+    var days = data.days.slice(-range), t = {};
+    days.forEach(function(d) { for (var k in d.counts) t[k] = (t[k] || 0) + d.counts[k]; });
+    return t;
+  }
+  function group(t, prefix) {
+    var rows = [];
+    for (var k in t) if (k.indexOf(prefix) === 0) rows.push([k.slice(prefix.length), t[k]]);
+    return rows.sort(function(a, b) { return b[1] - a[1]; });
+  }
+
+  // ---------- Render ----------
+  function render() {
+    var t = totals();
+    var visitors = data.visitors[range] || 0;
+    var wa = t['ev:whatsapp_click'] || 0;
+    var priceViews = (t['pg:/ngn-price'] || 0) + (t['pg:/usd-price'] || 0);
+    var rate = visitors ? (wa / visitors * 100) : 0;
+
+    var kpis = [
+      ['Visitors', fmt(visitors), 'unique people'],
+      ['Page views', fmt(t['ev:page_view']), 'all pages'],
+      ['WhatsApp clicks', fmt(wa), 'your leads'],
+      ['Lead rate', rate.toFixed(rate && rate < 10 ? 1 : 0) + '%', 'visitors who clicked WhatsApp'],
+      ['Clips opened', fmt(t['ev:clip_open']), 'portfolio videos watched'],
+      ['Pricelist views', fmt(priceViews), '₦ and $ pages']
+    ];
+    $('kpis').innerHTML = kpis.map(function(k) {
+      return '<div class="card kpi"><div class="label">' + k[0] + '</div><div class="num">' + k[1] + '</div><div class="sub">' + k[2] + '</div></div>';
+    }).join('');
+
+    var lists = [
+      ['WhatsApp clicks by button', group(t, 'lbl:whatsapp_click:').map(function(r) { return [labelName(r[0]), r[1]]; })],
+      ['Clips opened', group(t, 'lbl:clip_open:')],
+      ['Hero buttons', group(t, 'lbl:hero_cta:').map(function(r) { return [labelName(r[0]), r[1]]; })],
+      ['Where visitors come from', group(t, 'src:').map(function(r) { return [r[0] === 'direct' ? 'Direct / link shared in an app' : r[0], r[1]]; })],
+      ['Pages', group(t, 'pg:').map(function(r) { return [PAGE_NAMES[r[0]] || r[0], r[1]]; })],
+      ['Countries', group(t, 'cty:').map(function(r) { return [flag(r[0]) + ' ' + countryName(r[0]), r[1]]; })],
+      ['Devices', group(t, 'dev:').map(function(r) { return [r[0].charAt(0).toUpperCase() + r[0].slice(1), r[1]]; })],
+      ['Social clicks', group(t, 'lbl:social_click:').map(function(r) { return [labelName(r[0]), r[1]]; })],
+      ['Pricelist packages picked', group(t, 'lbl:package_select:').map(function(r) { return [labelName(r[0]), r[1]]; })]
+    ];
+    $('lists').innerHTML = lists.map(function(l) {
+      var rows = l[1].slice(0, 8), max = rows.length ? rows[0][1] : 1;
+      var body = rows.length ? '<ul class="rows">' + rows.map(function(r) {
+        return '<li><span class="name">' + esc(r[0]) + '</span><span class="val">' + fmt(r[1]) + '</span><span class="track"><span class="fill" style="width:' + (r[1] / max * 100) + '%"></span></span></li>';
+      }).join('') + '</ul>' : '<p class="empty">Nothing yet</p>';
+      return '<div class="card"><h2>' + l[0] + '</h2>' + body + '</div>';
+    }).join('');
+
+    renderChart();
+    renderFeed();
+  }
+
+  function renderChart() {
+    // "Today" alone is one bar, so the chart shows the last 7 days for it.
+    var n = range === 1 ? 7 : range;
+    var days = data.days.slice(-n);
+    $('chartNote').textContent = range === 1 ? 'last 7 days' : '';
+    var W = 1000, H = 200, top = 10, bottom = 24, left = 34;
+    var max = Math.max.apply(null, days.map(function(d) { return d.visitors; }).concat([4]));
+    var step = Math.ceil(max / 4), ymax = step * 4;
+    var plotW = W - left, slot = plotW / days.length, bw = Math.max(4, Math.min(36, slot - 6));
+    var y = function(v) { return top + (H - top - bottom) * (1 - v / ymax); };
+
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Visitors per day">';
+    for (var g = 0; g <= 4; g++) {
+      var gy = y(step * g);
+      svg += '<line class="grid" x1="' + left + '" x2="' + W + '" y1="' + gy + '" y2="' + gy + '" vector-effect="non-scaling-stroke"/>';
+    }
+    var labelEvery = days.length > 14 ? 5 : 1;
+    days.forEach(function(d, i) {
+      var x = left + slot * i + (slot - bw) / 2, h = Math.max(0, H - bottom - y(d.visitors));
+      var r = Math.min(4, bw / 2, h);
+      svg += '<rect class="hit" data-i="' + i + '" x="' + (left + slot * i) + '" y="0" width="' + slot + '" height="' + H + '"/>';
+      // Rounded at the top only, anchored to the baseline.
+      svg += h > 0
+        ? '<path class="b" data-i="' + i + '" d="M' + x + ',' + (H - bottom) + 'v' + (-(h - r)) + 'q0,' + (-r) + ' ' + r + ',' + (-r) + 'h' + (bw - 2 * r) + 'q' + r + ',0 ' + r + ',' + r + 'v' + (h - r) + 'z"/>'
+        : '';
+    });
+    svg += '</svg>';
+
+    // Axis labels are HTML so they don't stretch with the SVG.
+    var labels = '';
+    for (var g2 = 0; g2 <= 4; g2++) labels += '<div class="axis-y" style="position:absolute;left:0;top:' + (y(step * g2) / H * 100) + '%;transform:translateY(-50%);font-size:11px;color:var(--faint)">' + step * g2 + '</div>';
+    days.forEach(function(d, i) {
+      if ((days.length - 1 - i) % labelEvery) return;
+      var cx = (left + slot * i + slot / 2) / W * 100;
+      labels += '<div style="position:absolute;bottom:0;left:' + cx + '%;transform:translateX(-50%);font-size:11px;color:var(--faint);white-space:nowrap">' + shortDay(d.day) + '</div>';
+    });
+
+    var chart = $('chart'), tip = $('tip');
+    chart.innerHTML = svg + labels;
+    chart.appendChild(tip);
+
+    function show(i, evt) {
+      var d = days[i];
+      chart.querySelectorAll('.b.on').forEach(function(b) { b.classList.remove('on'); });
+      var bar = chart.querySelector('.b[data-i="' + i + '"]');
+      if (bar) bar.classList.add('on');
+      tip.innerHTML = '<b>' + longDay(d.day) + '</b>' + fmt(d.visitors) + ' visitors<br><span>' + fmt(d.counts['ev:page_view']) + ' page views · ' + fmt(d.counts['ev:whatsapp_click']) + ' WhatsApp clicks</span>';
+      var rect = chart.getBoundingClientRect();
+      var cx = (left + slot * i + slot / 2) / W * rect.width;
+      tip.style.left = Math.min(Math.max(cx, 90), rect.width - 90) + 'px';
+      tip.style.top = (y(d.visitors) / H * rect.height - 8) + 'px';
+      tip.style.display = 'block';
+    }
+    chart.querySelectorAll('.hit').forEach(function(h) {
+      var i = +h.getAttribute('data-i');
+      h.addEventListener('mouseenter', function() { show(i); });
+      h.addEventListener('click', function() { show(i); });
+    });
+    chart.addEventListener('mouseleave', function() {
+      tip.style.display = 'none';
+      chart.querySelectorAll('.b.on').forEach(function(b) { b.classList.remove('on'); });
+    });
+  }
+
+  function shortDay(s) { var d = new Date(s + 'T12:00:00Z'); return d.toLocaleDateString([], { day: 'numeric', month: 'short', timeZone: 'UTC' }); }
+  function longDay(s) { var d = new Date(s + 'T12:00:00Z'); return d.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }); }
+
+  function renderFeed() {
+    var items = data.recent || [];
+    $('feed').innerHTML = items.length ? items.map(function(it) {
+      var what = EVENT_NAMES[it.e] || it.e;
+      if (it.l) what += ': ' + labelName(it.l);
+      var meta = [flag(it.c) + ' ' + countryName(it.c), it.d, PAGE_NAMES[it.p] || it.p].join(' · ');
+      return '<li><time>' + ago(it.t) + '</time><div><div class="what">' + esc(what) + '</div><div class="meta">' + esc(meta) + '</div></div></li>';
+    }).join('') : '<li><span></span><span class="empty">No activity yet. Visit your site to test it.</span></li>';
+  }
+
+  // ---------- Login / controls ----------
+  function showLogin(msg) {
+    clearInterval(timer);
+    $('app').hidden = true;
+    $('login').hidden = false;
+    $('loginErr').textContent = msg || '';
+    $('pw').focus();
+  }
+  function showApp() {
+    $('login').hidden = true;
+    $('app').hidden = false;
+    refresh();
+    clearInterval(timer);
+    timer = setInterval(function() { if (!document.hidden) refresh(); }, 30000);
+  }
+
+  $('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var pw = $('pw').value;
+    $('loginErr').textContent = 'Checking…';
+    fetchStats(pw).then(function(j) {
+      if (j._status === 200) { store(KEY, pw); $('pw').value = ''; showApp(); }
+      else $('loginErr').textContent = j.error || 'Something went wrong.';
+    }).catch(function() { $('loginErr').textContent = 'Could not reach the server.'; });
+  });
+
+  document.querySelectorAll('[data-range]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      range = +b.getAttribute('data-range');
+      document.querySelectorAll('[data-range]').forEach(function(o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      if (data) render();
+    });
+  });
+  $('refresh').addEventListener('click', refresh);
+  $('logout').addEventListener('click', function() { store(KEY, null); showLogin(); });
+  document.addEventListener('visibilitychange', function() { if (!document.hidden && load(KEY)) refresh(); });
+  window.addEventListener('resize', function() { if (data) renderChart(); });
+
+  var nt = $('notrack');
+  try { nt.checked = localStorage.getItem('isaacd-notrack') === '1'; } catch (e) {}
+  nt.addEventListener('change', function() {
+    try { nt.checked ? localStorage.setItem('isaacd-notrack', '1') : localStorage.removeItem('isaacd-notrack'); } catch (e) {}
+  });
+
+  if (load(KEY)) showApp(); else showLogin();
+})();
+</script>
+</body>
+</html>
