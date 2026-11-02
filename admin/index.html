@@ -174,10 +174,11 @@
   // ---------- Names ----------
   var EVENT_NAMES = {
     page_view: 'Page view', hero_cta: 'Hero button', whatsapp_click: 'WhatsApp click',
-    social_click: 'Social click', clip_open: 'Clip opened', package_select: 'Package picked'
+    social_click: 'Social click', clip_open: 'Clip opened', review_open: 'Review opened', package_select: 'Package picked'
   };
   var LABEL_NAMES = {
     see_work: 'See My Work', start_project: 'Start a Project', final_cta: 'Bottom "Start a Project"',
+    hero: 'Hero "Start a Project"', floating: 'Floating WhatsApp button', reviews: 'Reviews "Get a video like these"',
     footer: 'Footer WhatsApp link', tiktok: 'TikTok'
   };
   var PAGE_NAMES = { '/': 'Homepage', '/ngn-price': 'Pricelist (₦)', '/usd-price': 'Pricelist ($)', other: 'Other' };
@@ -267,6 +268,7 @@
       ['Pages', group(t, 'pg:').map(function(r) { return [PAGE_NAMES[r[0]] || r[0], r[1]]; })],
       ['Countries', group(t, 'cty:').map(function(r) { return [flag(r[0]) + ' ' + countryName(r[0]), r[1]]; })],
       ['Devices', group(t, 'dev:').map(function(r) { return [r[0].charAt(0).toUpperCase() + r[0].slice(1), r[1]]; })],
+      ['Reviews opened', group(t, 'lbl:review_open:')],
       ['Social clicks', group(t, 'lbl:social_click:').map(function(r) { return [labelName(r[0]), r[1]]; })],
       ['Pricelist packages picked', group(t, 'lbl:package_select:').map(function(r) { return [labelName(r[0]), r[1]]; })]
     ];

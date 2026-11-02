@@ -4,7 +4,7 @@
 //   recent   the last 100 events, for the live feed
 var redis = require('./_redis');
 
-var EVENTS = ['page_view', 'hero_cta', 'whatsapp_click', 'social_click', 'clip_open', 'package_select'];
+var EVENTS = ['page_view', 'hero_cta', 'whatsapp_click', 'social_click', 'clip_open', 'review_open', 'package_select'];
 var PAGES = ['/', '/ngn-price', '/usd-price'];
 // Link-preview bots don't run JavaScript, so this only needs to catch headless browsers.
 var BOT_UA = /bot|crawl|spider|slurp|headless|lighthouse|phantom|selenium|puppeteer/i;

@@ -639,4 +639,41 @@
 
   render();
   syncCarouselPlayback();
+
+  // ---------- Floating WhatsApp button ----------
+  // Hidden while the hero's own buttons are on screen, so there's never two side by side.
+  var waFloat = document.getElementById('waFloat');
+  var heroCtas = document.querySelector('.hero .cta-row');
+  if ('IntersectionObserver' in window && heroCtas) {
+    new IntersectionObserver(function(entries) {
+      waFloat.classList.toggle('show', !entries[0].isIntersecting);
+    }).observe(heroCtas);
+  } else {
+    waFloat.classList.add('show');
+  }
+
+  // ---------- Review screenshots: tap to view full size ----------
+  var shotViewer = document.getElementById('shotViewer');
+  var shotImg = document.getElementById('shotViewerImg');
+  var shotOpener = null;
+  document.querySelectorAll('.review-shot').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      shotOpener = btn;
+      shotImg.src = btn.getAttribute('data-full');
+      shotImg.alt = btn.querySelector('img').alt;
+      shotViewer.hidden = false;
+      document.body.classList.add('lightbox-lock');
+      shotViewer.querySelector('.shot-close').focus();
+      trackEvent('review_open', { label: btn.closest('.review-card').querySelector('strong').textContent });
+    });
+  });
+  function closeShot() {
+    if (shotViewer.hidden) return;
+    shotViewer.hidden = true;
+    shotImg.removeAttribute('src');
+    document.body.classList.remove('lightbox-lock');
+    if (shotOpener) shotOpener.focus();
+  }
+  shotViewer.addEventListener('click', closeShot);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeShot(); });
 })();
